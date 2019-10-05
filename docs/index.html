@@ -96,8 +96,44 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolor
 <br><br>
 <!-- Results -->
 <h2>Experiments and Results</h2>
-<h4>How did you measure success? What experiments were used? What were the results, both quantitative and qualitative? Did you succeed? Did you fail? Why?</h4>
-Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+
+<h4>Experimental setup</h4>
+We will divide the dataset into a 80% training and 20% testing split. In order to test the functionality of our application, we will take the testing data and measure the sum of squared errors (SSE) of the clusters as well as the similarity between the input image and the returned output image. 
+
+<h4>Datasets</h4>
+We plan to use existing datasets containing images of cats and dogs. We found two Kaggle datasets:
+<div><a href="https://www.kaggle.com/crawford/cat-dataset">Cat Dataset</a>
+<div><a href="https://www.kaggle.com/tongpython/cat-and-dog#dog.4003.jpg">Cat and Dog</a>
+<br><br>Additionally, if needed, we can scrape Google Images for more images if we find the datasets do not contain enough images. 
+
+<h4>Existing code</h4>
+We plan to use code from several GitHub repositories:
+<div><a href="https://github.com/matterport/Mask_RCNN">Mask R-CNN</a>
+<div><a href="https://github.com/pochih/CBIR">Content-based image retrieval (CBIR) system</a>
+<div><a href="https://docs.opencv.org/3.4/d8/d83/tutorial_py_grabcut.html">GrabCut algorithm</a>
+<br><br>Also, we plan to use an existing implementation of a clustering algorithm: either k-means or expectation maximization (EM), both of which are included in scikit-learn:
+<div><a href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html">k-means</a>
+<div><a href="https://scikit-learn.org/stable/modules/mixture.html">EM</a>
+
+<h4>What we will implement</h4>
+We are implementing the pipeline to solve the problem end-to-end. Specifically, we need to create a useful image representation that captures the key information about the images. This could be a combination of texture, color, etc.
+
+<h4>Defining success</h4>
+We define success for the project to be the elbow of the k vs SSE curve and having a distance of 10% (of the mean distance) between input and output images. 
+
+<h4>Experiments</h4>
+<h5>Foreground feature representation</h5>
+We can try examining different features of the foreground. As a baseline, we can add every image pixel into a histogram. However, there is a concern that this will be too computationally expensive. It could be more effective and simpler to consider specific features of the image such as texture or color. 
+<h5>Distance function</h5>
+We can experiment with using different distance functions. To calculate similarity between histograms, two common functions are Euclidean distance and chi-squared. Unlike Euclidean which penalizes aboslute difference, chi-squared penalizes relative difference. Therefore, we expect the final clusters that result from using these two distance functions to be quite different. 
+<h5>Clustering algorithm</h5>
+We can try both k-means and EM clustering methods. The main difference is that k-means hard clusters whereas EM soft clusters. Whereas k-means assigns each point to a cluster definitively, EM uses a probabilistic approach to assign probabilities of belonging to each cluster for each point. Both could provide interesting results in this project since we expect k-means to give cleaner results faster but EM to perhaps find some insights missing from k-means.
+<br><br>Additionally, we can try varying the value of k in k-means. This is key to finding meaningful groups in the dataset. If the clusters are too small, similar images may not be grouped together. On the other, clusters that are too large will group dissimilar images together.  
+
+
+
+
+
 
 <br><br>
 <!-- Main Results Figure -->
