@@ -40,16 +40,18 @@ color: #FF9900;
 <span style="font-size: 18px; line-height: 1.5em;">Georgia Tech, Fall 2018</span>
 <hr>
 
-The code for this project can be found in <a href="https://github.com/raghavrajmittal/PetSwap">this repository</a>. It has been adapted from the following open source repositories:
+The code for this project can be found in <a href="https://github.com/raghavrajmittal/PetSwap">this repository</a>. <!--It has been adapted from the following open source repositories:
 <ul>
   <li><a href="https://github.com/matterport/Mask_RCNN">Mask R-CNN official implementation</a></li>
-</ul>
+</ul>-->
 
 
 
 <!-- Goal -->
-<h2>Abstract</h2>
-One or two sentences on the motivation behind the problem you are solving. One or two sentences describing the approach you took. One or two sentences on the main result you obtained.
+<h2>Problem Statement</h2>
+The purpose of this project is to match images of dogs with images of cats (and vice versa) based on color and texture. For example, given an input image of a cat, we wish to find an image of a dog from our dataset that it most similar in terms of fur/skin color and pattern. We hope to combine many of the techniques we learned in class— such as image segmentation, filter banks, and clustering—to create our system.
+
+The expected input is a real color image of a dog or a cat. The desired output is an image of the opposite animal type with the most similar fur/skin color and pattern.
 
 
 
@@ -81,54 +83,61 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 
 
 
-<br><br>
+<br><br><br>
 <!-- Approach -->
 <h2>Approach</h2>
-<h4>What did you do exactly? How did you solve the problem? Why did you think it would be successful? Is anything new in your approach?</h4>
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-<h4>What problems did you anticipate? What problems did you encounter? Did the very first thing you tried work?</h4>
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-
-
-
-
+<h4>Summary</h4>
+Our system contains three distinct components: animal image segmentation, color/texture representation, and clustering. With these three steps we will be able to take any input image of a dog or a cat and output an image with the most similar color and texture. We can simply query our pre-trained clusters with the color/texture representation of the image and return the closest image.
 <br><br>
+<h4>Animal Image Segmentation</h4>
+We will use <a href='https://github.com/matterport/Mask_RCNN'>Mask R-CNN</a> to segment the animal out of the image. This model has already been trained on the COCO dataset, which contains color images and segmentation masks of dogs and cats, among many other objects. Initially, we will use Mask R-CNN to segment animals out of our two datasets (see Datasets subsection under Experiments and Results). We will feed the segmented animals into our texture/color histogram generator and map each feature representation to the image using a dictionary. 
+<br><br>
+<h4>Color/Texture Representation</h4>
+Once we produce the segmented animal image, we create histograms from the image using a variety of feature extraction techniques. We will experiment with these <a href='https://github.com/pochih/CBIR'>feature representations</a> to determine the best possible representation for animal images. The first two we will test are color-based and texture-based feature extraction. We suspect that a fusion of these two features will produce the best clustering result. We then feed the resulting color/texture histograms for each image as input to the next step - the clustering algorithm.
+<br><br>
+<h4>Clustering</h4>
+We cluster images of dogs and cats separately by histogram similarity. We will start by running clustering to find similarities between histograms. Once we have clustered our training data from the dog and cat datasets, we will evaluate the performance by testing it with our test sets (see Datasets subsection). When there is a query to our system, we first find the closest cluster center. Once we are within the cluster, we select the closest histogram. Doing so will reduce the time complexity of the algorithm, as it removes the need to compare the new histogram with that of every image in the dataset to find the closest match. For dog input images, we query the cat cluster model and for cat input images, we query the dog cluster model. The chosen image is then returned to the user.
+
+
+<br><br><br>
 <!-- Results -->
 <h2>Experiments and Results</h2>
 
 <h4>Experimental setup</h4>
-We will divide the dataset into a 80% training and 20% testing split. In order to test the functionality of our application, we will take the testing data and measure the sum of squared errors (SSE) of the clusters as well as the similarity between the input image and the returned output image. 
-
+We will divide the dataset into a 80% "training" and 20% testing split. In this case, the training data is the pre-clustered images. In order to test the functionality of our application, we will take the testing data and measure the sum of squared errors (SSE) of the clusters as well as the similarity between the input image and the returned output image. 
+<br><br>
 <h4>Datasets</h4>
-We plan to use existing datasets containing images of cats and dogs. We found two Kaggle datasets:
-<div><a href="https://www.kaggle.com/crawford/cat-dataset">Cat Dataset</a>
-<div><a href="https://www.kaggle.com/tongpython/cat-and-dog#dog.4003.jpg">Cat and Dog</a>
-<br><br>Additionally, if needed, we can scrape Google Images for more images if we find the datasets do not contain enough images. 
-
+We plan to use existing datasets containing images of cats and dogs. We are using a pre-trained Mask R-CNN for image segmentation as mentioned above. This is trained on the <a href='http://cocodataset.org'>COCO dataset</a>.<br>We also have a dataset of cat images, the <a href="https://archive.org/details/CAT_DATASET">Cat Dataset</a>, which includes 10,000 cat images. Lastly, we have a dataset of dog images, the <a href="http://vision.stanford.edu/aditya86/ImageNetDogs/">Stanford Dogs Dataset</a>, which includes over 20,000 images.
+<br>Additionally, if needed, we can scrape Google Images for more images if we find the datasets do not contain enough images. 
+<br><br>
 <h4>Existing code</h4>
 We plan to use code from several GitHub repositories:
 <div><a href="https://github.com/matterport/Mask_RCNN">Mask R-CNN</a>
 <div><a href="https://github.com/pochih/CBIR">Content-based image retrieval (CBIR) system</a>
 <div><a href="https://docs.opencv.org/3.4/d8/d83/tutorial_py_grabcut.html">GrabCut algorithm</a>
-<br><br>Also, we plan to use an existing implementation of a clustering algorithm: either k-means or expectation maximization (EM), both of which are included in scikit-learn:
+<br>Also, we plan to use an existing implementation of a clustering algorithm: either k-means, k-modes or expectation maximization (EM), which can be found online:
 <div><a href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html">k-means</a>
+<div href="https://github.com/nicodv/kmodes"><a>k-modes</a>
 <div><a href="https://scikit-learn.org/stable/modules/mixture.html">EM</a>
-
+<br><br>
 <h4>What we will implement</h4>
 We are implementing the pipeline to solve the problem end-to-end. Specifically, we need to create a useful image representation that captures the key information about the images. This could be a combination of texture, color, etc.
-
+<br><br>
 <h4>Defining success</h4>
-We define success for the project to be the elbow of the k vs SSE curve and having a distance of 10% (of the mean distance) between input and output images. 
-
+Mathematically, we define success for the project to be the elbow of the k vs SSE curve and having a distance of 10% (of the mean distance) between input and output images. We would also evaluate how close the dogs and cats look by have multiple people using the service and reviewing it.
+<br><br>
 <h4>Experiments</h4>
+<h5>Mask R-CNN</h5>
+We will test how effective this pre-trained Mask R-CNN is. We hypothesize that it will be accurate when segmenting the dog and cat images from the other datasets. If we find that this model isn’t as accurate, we will try training it on some of the images from the other datasets as well to see if it improves accuracy significantly. <br>
 <h5>Foreground feature representation</h5>
-We can try examining different features of the foreground. As a baseline, we can add every image pixel into a histogram. However, there is a concern that this will be too computationally expensive. It could be more effective and simpler to consider specific features of the image such as texture or color. 
+We can try examining different features of the foreground. As a baseline, we can add every image pixel into a histogram. However, there is a concern that this will be too computationally expensive. It could be more effective and simpler to consider specific features of the image such as texture or color. <br>
 <h5>Distance function</h5>
-We can experiment with using different distance functions. To calculate similarity between histograms, two common functions are Euclidean distance and chi-squared. Unlike Euclidean which penalizes aboslute difference, chi-squared penalizes relative difference. Therefore, we expect the final clusters that result from using these two distance functions to be quite different. 
-<h5>Clustering algorithm</h5>
-We can try both k-means and EM clustering methods. The main difference is that k-means hard clusters whereas EM soft clusters. Whereas k-means assigns each point to a cluster definitively, EM uses a probabilistic approach to assign probabilities of belonging to each cluster for each point. Both could provide interesting results in this project since we expect k-means to give cleaner results faster but EM to perhaps find some insights missing from k-means.
-<br><br>Additionally, we can try varying the value of k in k-means. This is key to finding meaningful groups in the dataset. If the clusters are too small, similar images may not be grouped together. On the other, clusters that are too large will group dissimilar images together.  
+We can experiment with using different distance functions. To calculate similarity between histograms, two common functions are Euclidean distance and chi-squared. Unlike Euclidean which penalizes aboslute difference, chi-squared penalizes relative difference. Therefore, we expect the final clusters that result from using these two distance functions to be quite different. <br>
+<h5>Clustering algorithm</h5> 
+There are details of our clustering process that we need to determine through experiments. First, we need to decide whether we would cluster the dogs and cats separately or all together.<br>
+Next, we would experiment with the clustering methods. We can try both hard and soft clustering. Hard clustering assigns each point to a cluster definitively, soft clustering uses a probabilistic approach to assign probabilities of belonging to each cluster for each point. Both could provide interesting results in this project since we expect hard clustering to give cleaner results faster but soft clustering to perhaps find some insights missing from hard clustering.<br>
+Another detail would be what hard clustering algorithm we would utilize. We would decide between centroid-based and density-based, i.e. mean clustering vs. mode clustering. We would figure out these two details by comparing the accuracy of each implementation. <br>
+Additionally, we can try varying the value of k in hard clustering. This is key to finding meaningful groups in the dataset. If the clusters are too small, similar images may not be grouped together. On the other, clusters that are too large will group dissimilar images together. We would decide this using the elbow method, trying to find the optimal value of k.
 
 
 
