@@ -103,14 +103,14 @@ We cluster images of dogs and cats separately by histogram similarity. We will s
 <!-- Results -->
 <h2>Experiments and Results</h2>
 
-<h4>Experimental setup</h4>
+<h4>Experimental Setup</h4>
 We will divide the dataset into a 80% "training" and 20% testing split. In this case, the training data is the pre-clustered images. In order to test the functionality of our application, we will take the testing data and measure the sum of squared errors (SSE) of the clusters as well as the similarity between the input image and the returned output image.
 <br><br>
 <h4>Datasets</h4>
 We plan to use existing datasets containing images of cats and dogs. We are using a pre-trained Mask R-CNN for image segmentation as mentioned above. This is trained on the <a href='http://cocodataset.org'>COCO dataset</a>.<br>We also have a dataset of cat images, the <a href="https://archive.org/details/CAT_DATASET">Cat Dataset</a>, which includes 10,000 cat images. Lastly, we have a dataset of dog images, the <a href="http://vision.stanford.edu/aditya86/ImageNetDogs/">Stanford Dogs Dataset</a>, which includes over 20,000 images.
 <br>Additionally, if needed, we can scrape Google Images for more images if we find the datasets do not contain enough images.
 <br><br>
-<h4>Existing code</h4>
+<h4>Existing Code</h4>
 We plan to use code from several GitHub repositories:
 <div><a href="https://github.com/matterport/Mask_RCNN">Mask R-CNN</a>
 <div><a href="https://github.com/pochih/CBIR">Content-based image retrieval (CBIR) system</a>
@@ -120,20 +120,20 @@ We plan to use code from several GitHub repositories:
 <div href="https://github.com/nicodv/kmodes"><a>k-modes</a>
 <div><a href="https://scikit-learn.org/stable/modules/mixture.html">EM</a>
 <br><br>
-<h4>What we will implement</h4>
+<h4>Implementation Details</h4>
 We are implementing the pipeline to solve the problem end-to-end. Specifically, we need to create a useful image representation that captures the key information about the images. This could be a combination of texture, color, etc.
 <br><br>
-<h4>Defining success</h4>
+<h4>Defining Success</h4>
 Mathematically, we define success for the project to be the elbow of the k vs SSE curve and having a distance of 10% (of the mean distance) between input and output images. We would also evaluate how close the dogs and cats look by have multiple people using the service and reviewing it.
 <br><br>
 <h4>Experiments</h4>
 <h5>Mask R-CNN</h5>
 We will test how effective this pre-trained Mask R-CNN is. We hypothesize that it will be accurate when segmenting the dog and cat images from the other datasets. If we find that this model isn’t as accurate, we will try training it on some of the images from the other datasets as well to see if it improves accuracy significantly. <br>
-<h5>Foreground feature representation</h5>
+<h5>Foreground Feature Representation</h5>
 We can try examining different features of the foreground. As a baseline, we can add every image pixel into a histogram. However, there is a concern that this will be too computationally expensive. It could be more effective and simpler to consider specific features of the image such as texture or color. <br>
-<h5>Distance function</h5>
+<h5>Distance Function</h5>
 We can experiment with using different distance functions. To calculate similarity between histograms, two common functions are Euclidean distance and chi-squared. Unlike Euclidean which penalizes aboslute difference, chi-squared penalizes relative difference. Therefore, we expect the final clusters that result from using these two distance functions to be quite different. <br>
-<h5>Clustering algorithm</h5>
+<h5>Clustering Algorithm</h5>
 There are details of our clustering process that we need to determine through experiments. First, we need to decide whether we would cluster the dogs and cats separately or all together.<br>
 Next, we would experiment with the clustering methods. We can try both hard and soft clustering. Hard clustering assigns each point to a cluster definitively, soft clustering uses a probabilistic approach to assign probabilities of belonging to each cluster for each point. Both could provide interesting results in this project since we expect hard clustering to give cleaner results faster but soft clustering to perhaps find some insights missing from hard clustering.<br>
 Another detail would be what hard clustering algorithm we would utilize. We would decide between centroid-based and density-based, i.e. mean clustering vs. mode clustering. We would figure out these two details by comparing the accuracy of each implementation. <br>
