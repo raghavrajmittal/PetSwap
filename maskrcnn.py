@@ -7,6 +7,7 @@ import numpy as np
 import skimage.io
 import matplotlib
 import matplotlib.pyplot as plt
+import argparse
 
 ROOT_DIR = os.path.abspath("Mask_RCNN/") # Root directory of the project
 sys.path.append(ROOT_DIR)  # To find local version of the library
@@ -21,6 +22,14 @@ from mrcnn import utils
 import mrcnn.model as modellib
 from mrcnn import visualize
 import coco
+
+# in case video needs to be saved
+ap = argparse.ArgumentParser()
+ap.add_argument("-i", "--images", default=os.path.join(ROOT_DIR, "images"),
+	help="path of the image directory")
+args = vars(ap.parse_args())
+IMAGE_DIR = args['images']
+
 
 
 # ## Configurations
@@ -43,13 +52,11 @@ model.load_weights(COCO_MODEL_PATH, by_name=True) # Load weights trained on MS-C
 
 # ## Class Names
 # To improve consistency, and to support training on data from multiple sources at the same time, our ```Dataset``` class assigns it's own sequential integer IDs to each class. For example, if you load the COCO dataset using our ```Dataset``` class, the 'person' class would get class ID = 1 (just like COCO) and the 'teddy bear' class is 78 (different from COCO). Keep that in mind when mapping class IDs to class names.
-
 # To get the list of class names, you'd load the dataset and then use the ```class_names``` property like this.
 # dataset = coco.CocoDataset()
 # dataset.load_coco(COCO_DIR, "train")
 # dataset.prepare()
 # print(dataset.class_names)
-
 # COCO Class names - Instead of downloading, we're including the list of class names below
 # Index of the class in the list is its ID.
 class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
@@ -69,6 +76,8 @@ class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
                'teddy bear', 'hair drier', 'toothbrush']
 #print(class_names.index('cat')) # -> 16
 #print(class_names.index('dog')) # -> 17
+
+
 
 # ## Run Object Detection
 # Load a random image from the images folder and visualize results
