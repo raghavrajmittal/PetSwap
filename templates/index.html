@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>PetSwap</h1>
+
+<h2>Ever wonder what your cat would like as a dog, and vice versa?</h2>
+
+<template>
+  <h2>Flower</h2>
+  <img src="img_white_flower.jpg" width="214" height="204">
+</template>
+
+<p>Input an image of a cat or dog and we'll find a matching animal!</p>
+
+<form action="http://localhost:5000/get_match" method="post">
+  <input type="file" name="pic" accept="image/*">
+  <input type="submit">
+</form>
+
+</body>
+</html>
