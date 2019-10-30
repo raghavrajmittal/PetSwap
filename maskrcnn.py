@@ -9,19 +9,19 @@ import matplotlib
 import matplotlib.pyplot as plt
 import argparse
 
-ROOT_DIR = os.path.abspath("Mask_RCNN/") # Root directory of the project
+ROOT_DIR = os.path.abspath("mask/") # Root directory of the project
 sys.path.append(ROOT_DIR)  # To find local version of the library
 sys.path.append(os.path.join(ROOT_DIR, "samples/coco/"))  # To find local version
 MODEL_DIR = os.path.join(ROOT_DIR, "logs") # Directory to save logs and trained model
 COCO_MODEL_PATH = os.path.join(ROOT_DIR, "mask_rcnn_coco.h5") # Local path to trained weights file
-if not os.path.exists(COCO_MODEL_PATH): # Download COCO trained weights from Releases if needed
-    utils.download_trained_weights(COCO_MODEL_PATH)
-IMAGE_DIR = os.path.join(ROOT_DIR, "images")
-
 from mrcnn import utils
 import mrcnn.model as modellib
 from mrcnn import visualize
 import coco
+if not os.path.exists(COCO_MODEL_PATH): # Download COCO trained weights from Releases if needed
+    utils.download_trained_weights(COCO_MODEL_PATH)
+IMAGE_DIR = os.path.join(ROOT_DIR, "images")
+
 
 # in case video needs to be saved
 ap = argparse.ArgumentParser()
