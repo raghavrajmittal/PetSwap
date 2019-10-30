@@ -9,7 +9,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import argparse
 
-ROOT_DIR = os.path.abspath("Mask_RCNN/") # Root directory of the project
+ROOT_DIR = os.path.abspath("mask/") # Root directory of the project
 sys.path.append(ROOT_DIR)  # To find local version of the library
 sys.path.append(os.path.join(ROOT_DIR, "samples/coco/"))  # To find local version
 MODEL_DIR = os.path.join(ROOT_DIR, "logs") # Directory to save logs and trained model
