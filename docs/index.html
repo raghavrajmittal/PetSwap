@@ -145,16 +145,25 @@ Another detail would be what hard clustering algorithm we would utilize. We woul
 Additionally, we can try varying the value of k in hard clustering. This is key to finding meaningful groups in the dataset. If the clusters are too small, similar images may not be grouped together. On the other, clusters that are too large will group dissimilar images together. We would decide this using the elbow method, trying to find the optimal value of k.
 
 
-
-
-
-
+<h2>Qualitative Results</h2>
+Using the Mask R-CNN implementation, and updating it to detect cats and dogs only, we can produce the following succesful segmentation.
 <br><br>
-<!-- Main Results Figure -->
 <div style="text-align: center;">
-<img style="height: 300px;" alt="" src="images/results.png">
-</div>
+  <img style="height: 200px;" alt="" src="img/mask_rcnn_output.png">
+  <br>
+  Output of Mask R-CNN
+  </div>
 
+
+<h2>Conclusion/Future Work</h2>
+We have quite a few things to achieve for our final project update. The first thing we have to do run clustering on the feature representations of the images to ensure that our feature representations accurately represent the image content we are trying to retrieve. This can also help us in ensuring that the specifications of our clustering algorithm are good. Based on this, we can update our feature representation and clustering accordingly. We also need to implement an effective way of storing our data such that it can be accessed easily, and information about the closest cluster center and feature representation can be stored. Lastly, we need to create an interface for our project so it can be easily used.
+
+<h2>References</h2>
+<ol>
+  <li><a href="https://github.com/matterport/Mask_RCNN">Mask R-CNN</a></li>
+  <li><a href="https://www.researchgate.net/publication/220595166_Image_Clustering_using_Color_Texture_and_Shape_Features">CBIR with Color and Texture</a></li>
+  <li><a href="https://link.springer.com/chapter/10.1007/978-3-642-27329-2_105">Using Gray Level Co-occurence Matrix</a></li>
+</ol>
 
 
 <br><br>
