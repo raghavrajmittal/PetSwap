@@ -54,8 +54,7 @@ Previous project deliverables: <a href="proposal.html">proposal</a>
 <br><br>
 <!-- Goal -->
 <h2>Abstract</h2>
-The purpose of this project is to match images of dogs with images of cats (and vice versa) based on color and texture. For example, given an input image of a cat, we wish to find an image of a dog from our dataset that it most similar in terms of fur/skin color and pattern. We hope to combine many of the techniques we learned in class— such as image segmentation, filter banks, and clustering—to create our system.
-
+The purpose of this project is to match images of dogs with images of cats (and vice versa) based on color and texture. For example, given an input image of a cat, we wish to find an image of a dog from our dataset that it most similar in terms of fur/skin color and pattern. Our architecture consists of using Mask R-CNN to segment the animal from the image, obtaining a fused feature representation of color and texture features and cluster the images based on similarity.
 The expected input is a real color image of a dog or a cat. The desired output is an image of the opposite animal type with the most similar fur/skin color and pattern.
 
 
@@ -84,16 +83,8 @@ Proposed output
 
 <!-- <br><br> -->
 <!-- Introduction -->
-<!-- <h2>Introduction / Background / Motivation</h2>
-<h4>What did you try to do? What problem did you try to solve? Articulate your objectives using absolutely no jargon.</h4>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-
-<h4>How is it done today, and what are the limits of current practice?</h4>
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-
-<h4>Who cares? If you are successful, what difference will it make?</h4>
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. -->
-
+<h2>Introduction</h2>
+We were inspired to do this project from this <a href="https://twistedsifter.com/2016/09/kittens-and-their-matching-bunnies/">article</a>. This is an application of <a href='https://en.wikipedia.org/wiki/Content-based_image_retrieval'>content-based image retrieval</a>. There has been a lot of research on CBIR, and we are performing this retrieval based on color and texture, which is also common practice. One thing that we have seen less of is the juxtaposition of image segmentation and CBIR. There are studies that address this, but we aim to see how well this combined approach performs. At the end of the day, we believe that this is just an interesting and fun application of various computer vision techniques.
 
 
 
