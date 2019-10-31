@@ -31,7 +31,7 @@ def split_data(dataset, split_val):
 
 
 if __name__ == "__main__":
-    dog_path = "./dogs/Images"
+    dog_path = "./dogs/images/Images"
     cat_path = "./cats/"
     dog_data = get_data(dog_path)
     cat_data = get_data(cat_path)
@@ -39,3 +39,4 @@ if __name__ == "__main__":
     split_data(dog_data, 0.95)
     os.chdir("./cats")
     split_data(cat_data, 0.95)
+

@@ -6,6 +6,6 @@ wget "http://vision.stanford.edu/aditya86/ImageNetDogs/images.tar"
 
 unzip "CAT_DATASET_01.zip" -d "cats/" 
 unzip "CAT_DATASET_02.zip" -d "cats/" 
-tar -xvf "images.tar" -C "dogs" 
+tar -xvf "images.tar" -C "/dogs" 
 
 python transform_data.py
