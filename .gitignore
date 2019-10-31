@@ -111,3 +111,4 @@ dogs/
 *.zip
 *.tar
 tester.py
+*.h5
