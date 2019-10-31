@@ -108,3 +108,6 @@ venv.bak/
 # data
 cats/
 dogs/
+*.zip
+*.tar
+tester.py
