@@ -96,7 +96,8 @@ Our system contains three distinct components: animal image segmentation, color/
 We use <a href='https://github.com/matterport/Mask_RCNN'>Mask R-CNN</a> to segment the animal out of the image. This model has already been pre-trained on the COCO dataset, which contains color images and segmentation masks of dogs and cats (among many other objects). We used this Mask R-CNN model to segment the animals out of our two datasets (see Datasets subsection under Experiments and Results). The next step is to feed the segmented animals into our texture/color histogram generator and map each feature representation to the image using a dictionary.
 <br><br>
 <h4>Color/Texture Representation</h4>
-Once we produce the segmented animal image, we will create histograms from the image using a variety of feature extraction techniques. We will experiment with these <a href='https://github.com/pochih/CBIR'>feature representations</a> to determine the best possible representation for animal images. The first two we will test are color-based and texture-based feature extraction. We suspect that a fusion of these two features will produce the best clustering result. We then feed the resulting color/texture histograms for each image as input to the next step - the clustering algorithm.
+Once we produced the segmented animal image, we extracted color and texture features. We are using a combination of various color features at the moment. Firstly, we are using the mean and standard deviation of the red, green and blue channels of the image. Secondly, we are also converting the image's color space to <a href="https://en.wikipedia.org/wiki/YCbCr">YCbCr</a> and computing the mean and standard deviation across the channels to obtain another feature. Lastly, we are calculating a histogram of the HSV color space.
+For the texture features, we are using a Gray Level co-occurence matrix, which is characterization of the texture of the image. Using this matrix, we extract statistical measures to use as features. We also plan on experimenting with Gabor filter to extract texture features as well.
 <br><br>
 <h4>Clustering</h4>
 We cluster images of dogs and cats separately by histogram similarity. We will start by running clustering to find similarities between histograms. Once we have clustered our training data from the dog and cat datasets, we will evaluate the performance by testing it with our test sets (see Datasets subsection). When there is a query to our system, we first find the closest cluster center. Once we are within the cluster, we select the closest histogram. Doing so will reduce the time complexity of the algorithm, as it removes the need to compare the new histogram with that of every image in the dataset to find the closest match. For dog input images, we query the cat cluster model and for cat input images, we query the dog cluster model. The chosen image is then returned to the user.
@@ -112,9 +113,10 @@ We will divide the dataset into a 80% "training" and 20% testing split. In this 
 
 <br><br>
 <h4>Datasets</h4>
-We plan to use existing datasets containing images of cats and dogs. We are using a pre-trained Mask R-CNN for image segmentation as mentioned above. This is trained on the <a href='http://cocodataset.org'>COCO dataset</a>.<br>We also have a dataset of cat images, the <a href="https://archive.org/details/CAT_DATASET">Cat Dataset</a>, which includes 10,000 cat images. Lastly, we have a dataset of dog images, the <a href="http://vision.stanford.edu/aditya86/ImageNetDogs/">Stanford Dogs Dataset</a>, which includes over 20,000 images.
-<br>Additionally, if needed, we can scrape Google Images for more images if we find the datasets do not contain enough images.
-
+We use two main datasets--one containing images of cats and the other containing images of dogs. The <a href="https://archive.org/details/CAT_DATASET">Cat Dataset</a> includes 10,000 cat images and the <a href="http://vision.stanford.edu/aditya86/ImageNetDogs/">Stanford Dogs Dataset</a> includes over 20,000 images of dogs, classified by breed.
+Before we can use these datasets to train our k-means clusters, we must first clean the data. This involves extracting images from the dog and cat datasets while also ignoring other metadata files. The dog dataset must be shuffled so that the images are no longer separated by breed.
+Once we clean the two datasets, we split each dataset into a training and testing set. The data is now prepared for the Experimental Setup.
+<br><br>As a side note, we are using a pre-trained Mask R-CNN for image segmentation as mentioned above. This is trained on the <a href='http://cocodataset.org'>COCO dataset</a>.
 <br><br>
 <h4>Existing Code</h4>
 We plan to use code from several GitHub repositories:
@@ -141,16 +143,16 @@ Mathematically, we define success for the project to be the elbow of the k vs SS
 <h5>Mask R-CNN</h5>
 We hypothesize that it will be accurate when segmenting the dog and cat images from the other datasets. If we found that this model wasn't as accurate, we planned to train it on some of the images from other datasets as well to see if accuracy imporroved. However, the Mask R-CNN model pre-trained on COCO was effective in segmenting out cat and dog images pretty accurately. Using the demo code from the original author of the Mask R-CNNs, we were able to successfully segment out objects in custom images. We processed the output futher to remove bounding boxes and segmentation masks that did not correspond to the dog and cat classes. We then extract pixels corresponing to the remaining masks, and use these pixel values to compute a feature representation of the object. <br>
 <h5>Foreground Feature Representation</h5>
-We can try examining different features of the foreground. As a baseline, we can add every image pixel into a histogram. However, there is a concern that this will be too computationally expensive. It could be more effective and simpler to consider specific features of the image such as texture or color.
-<br><h5>Distance Function</h5>
-We can experiment with using different distance functions. To calculate similarity between histograms, two common functions are Euclidean distance and chi-squared. Unlike Euclidean which penalizes aboslute difference, chi-squared penalizes relative difference. Therefore, we expect the final clusters that result from using these two distance functions to be quite different.
-<br><h5>Clustering Algorithm</h5>
-There are details of our clustering process that we need to determine through experiments. First, we need to decide whether we would cluster the dogs and cats separately or all together.
-<br>Next, we would experiment with the clustering methods. We can try both hard and soft clustering. Hard clustering assigns each point to a cluster definitively, soft clustering uses a probabilistic approach to assign probabilities of belonging to each cluster for each point. Both could provide interesting results in this project since we expect hard clustering to give cleaner results faster but soft clustering to perhaps find some insights missing from hard clustering.<br>
+We have implemented various feature extractors based on color and texture, and we will experiment with which combination of those feature extractors provide the best clustering result. <br>
+<h5>Distance Function</h5>
+We can experiment with using different distance functions. To calculate similarity between histograms, two common functions are Euclidean distance and chi-squared. Unlike Euclidean which penalizes aboslute difference, chi-squared penalizes relative difference. Therefore, we expect the final clusters that result from using these two distance functions to be quite different. <br>
+<h5>Clustering Algorithm</h5>
+There are details of our clustering process that we need to determine through experiments. First, we need to decide whether we would cluster the dogs and cats separately or all together.<br>
+Next, we would experiment with the clustering methods. We can try both hard and soft clustering. Hard clustering assigns each point to a cluster definitively, soft clustering uses a probabilistic approach to assign probabilities of belonging to each cluster for each point. Both could provide interesting results in this project since we expect hard clustering to give cleaner results faster but soft clustering to perhaps find some insights missing from hard clustering.<br>
 Another detail would be what hard clustering algorithm we would utilize. We would decide between centroid-based and density-based, i.e. mean clustering vs. mode clustering. We would figure out these two details by comparing the accuracy of each implementation. <br>
 Additionally, we can try varying the value of k in hard clustering. This is key to finding meaningful groups in the dataset. If the clusters are too small, similar images may not be grouped together. On the other, clusters that are too large will group dissimilar images together. We would decide this using the elbow method, trying to find the optimal value of k.
 
-
+<br><br><br>
 <h2>Qualitative Results</h2>
 Using the Mask R-CNN implementation, and updating it to detect cats and dogs only, we can produce the following succesful segmentation.
 <br><br>
@@ -161,9 +163,11 @@ Using the Mask R-CNN implementation, and updating it to detect cats and dogs onl
   </div>
 
 
+  <br><br><br>
 <h2>Conclusion/Future Work</h2>
 We have quite a few things to achieve for our final project update. The first thing we have to do run clustering on the feature representations of the images to ensure that our feature representations accurately represent the image content we are trying to retrieve. This can also help us in ensuring that the specifications of our clustering algorithm are good. Based on this, we can update our feature representation and clustering accordingly. We also need to implement an effective way of storing our data such that it can be accessed easily, and information about the closest cluster center and feature representation can be stored. Lastly, we need to create an interface for our project so it can be easily used.
 
+<br><br><br>
 <h2>References</h2>
 <ol>
   <li><a href="https://github.com/matterport/Mask_RCNN">Mask R-CNN</a></li>
