@@ -54,8 +54,7 @@ Previous project deliverables: <a href="proposal.html">proposal</a>
 <br><br>
 <!-- Goal -->
 <h2>Abstract</h2>
-The purpose of this project is to match images of dogs with images of cats (and vice versa) based on color and texture. For example, given an input image of a cat, we wish to find an image of a dog from our dataset that it most similar in terms of fur/skin color and pattern. Our architecture consists of using Mask R-CNN to segment the animal from the image, obtaining a fused feature representation of color and texture features and cluster the images based on similarity.
-The expected input is a real color image of a dog or a cat. The desired output is an image of the opposite animal type with the most similar fur/skin color and pattern.
+The purpose of this project is to match images of dogs with images of cats (and vice versa) based on color and texture. For example, given an input image of a cat, we wish to find an image of a dog from our dataset that it most similar in terms of fur/skin color and pattern. Our architecture consists of using Mask R-CNN to segment the animal from the image, obtaining a fused feature representation of color and texture features and cluster the images based on similarity. The expected input is a real color image of a dog or a cat. The desired output is an image of the opposite animal type with the most similar fur/skin color and pattern. Currently, we are able to segment images, remove the dog/cat masks, and then extract some form of feature representation from it.
 
 
 
@@ -72,13 +71,14 @@ Sample input-output pair
 
 
 
-
 <!-- <br><br> -->
 <!-- Introduction -->
 <h2>Introduction</h2>
 We were inspired to do this project from this <a href="https://twistedsifter.com/2016/09/kittens-and-their-matching-bunnies/">article</a>. This is an application of <a href='https://en.wikipedia.org/wiki/Content-based_image_retrieval'>content-based image retrieval</a>. There has been a lot of research on CBIR, and we are performing this retrieval based on color and texture, which is also common practice. One thing that we have seen less of is the juxtaposition of image segmentation and CBIR. There are studies that address this, but we aim to see how well this combined approach performs. At the end of the day, we believe that this is just an interesting and fun application of various computer vision techniques.
 
 
+
+<br><br><br>
 <!-- figure -->
 <br><br>
 <div style="text-align: center;">
@@ -87,23 +87,21 @@ We were inspired to do this project from this <a href="https://twistedsifter.com
 Planned pipeline of PetSwap
 </div>
 
-
-
-<br><br><br>
 <!-- Approach -->
 <h2>Approach</h2>
 <h4>Summary</h4>
 Our system contains three distinct components: animal image segmentation, color/texture representation, and clustering. With these three steps we will be able to take any input image of a dog or a cat and output an image with the most similar color and texture. We can simply query our pre-trained clusters with the color/texture representation of the image and return the closest image.
 <br><br>
 <h4>Animal Image Segmentation</h4>
-We use <a href='https://github.com/matterport/Mask_RCNN'>Mask R-CNN</a> to segment the animal out of the image. This model has already been trained on the COCO dataset, which contains color images and segmentation masks of dogs and cats (among many other objects). We used Mask R-CNN to segment animals out of our two datasets (see Datasets subsection under Experiments and Results). The next step is to feed the segmented animals into our texture/color histogram generator and map each feature representation to the image using a dictionary.
+We use <a href='https://github.com/matterport/Mask_RCNN'>Mask R-CNN</a> to segment the animal out of the image. This model has already been pre-trained on the COCO dataset, which contains color images and segmentation masks of dogs and cats (among many other objects). We used this Mask R-CNN model to segment the animals out of our two datasets (see Datasets subsection under Experiments and Results). The next step is to feed the segmented animals into our texture/color histogram generator and map each feature representation to the image using a dictionary.
 <br><br>
 <h4>Color/Texture Representation</h4>
 Once we produced the segmented animal image, we extracted color and texture features. We are using a combination of various color features at the moment. Firstly, we are using the mean and standard deviation of the red, green and blue channels of the image. Secondly, we are also converting the image's color space to <a href="https://en.wikipedia.org/wiki/YCbCr">YCbCr</a> and computing the mean and standard deviation across the channels to obtain another feature. Lastly, we are calculating a histogram of the HSV color space.
-For the texture features, we are using a Gray Level co-occurence matrix, which is characterization of the texture of the image. Using this matrix, we extract statistical measures to use as features. We also plan on experimenting with Gabor filter to extract texture features as well. 
+For the texture features, we are using a Gray Level co-occurence matrix, which is characterization of the texture of the image. Using this matrix, we extract statistical measures to use as features. We also plan on experimenting with Gabor filter to extract texture features as well.
 <br><br>
 <h4>Clustering</h4>
 We cluster images of dogs and cats separately by histogram similarity. We will start by running clustering to find similarities between histograms. Once we have clustered our training data from the dog and cat datasets, we will evaluate the performance by testing it with our test sets (see Datasets subsection). When there is a query to our system, we first find the closest cluster center. Once we are within the cluster, we select the closest histogram. Doing so will reduce the time complexity of the algorithm, as it removes the need to compare the new histogram with that of every image in the dataset to find the closest match. For dog input images, we query the cat cluster model and for cat input images, we query the dog cluster model. The chosen image is then returned to the user.
+
 
 
 <br><br><br>
@@ -112,12 +110,13 @@ We cluster images of dogs and cats separately by histogram similarity. We will s
 
 <h4>Experimental Setup</h4>
 We will divide the dataset into a 80% "training" and 20% testing split. In this case, the training data is the pre-clustered images. In order to test the functionality of our application, we will take the testing data and measure the sum of squared errors (SSE) of the clusters as well as the similarity between the input image and the returned output image.
+
 <br><br>
 <h4>Datasets</h4>
 We use two main datasets--one containing images of cats and the other containing images of dogs. The <a href="https://archive.org/details/CAT_DATASET">Cat Dataset</a> includes 10,000 cat images and the <a href="http://vision.stanford.edu/aditya86/ImageNetDogs/">Stanford Dogs Dataset</a> includes over 20,000 images of dogs, classified by breed.
 Before we can use these datasets to train our k-means clusters, we must first clean the data. This involves extracting images from the dog and cat datasets while also ignoring other metadata files. The dog dataset must be shuffled so that the images are no longer separated by breed.
-Once we clean the two datasets, we split each dataset into a training and testing set. The data is now prepared for the Experimental Setup. 
-<br><br>As a side note, we are using a pre-trained Mask R-CNN for image segmentation as mentioned above. This is trained on the <a href='http://cocodataset.org'>COCO dataset</a>. 
+Once we clean the two datasets, we split each dataset into a training and testing set. The data is now prepared for the Experimental Setup.
+<br><br>As a side note, we are using a pre-trained Mask R-CNN for image segmentation as mentioned above. This is trained on the <a href='http://cocodataset.org'>COCO dataset</a>.
 <br><br>
 <h4>Existing Code</h4>
 <ul>We plan to use code from several GitHub repositories:
@@ -134,13 +133,15 @@ Once we clean the two datasets, we split each dataset into a training and testin
 <br><br>
 <h4>Implementation Details</h4>
 We are implementing the pipeline to solve the problem end-to-end. Specifically, we need to create a useful image representation that captures the key information about the images. This could be a combination of texture, color, etc.
+
 <br><br>
 <h4>Defining Success</h4>
 Mathematically, we define success for the project to be the elbow of the k vs SSE curve and having a distance of 10% (of the mean distance) between input and output images. We would also evaluate how close the dogs and cats look by have multiple people using the service and reviewing it.
+
 <br><br>
 <h4>Experiments</h4>
 <h5>Mask R-CNN</h5>
-We will test how effective this pre-trained Mask R-CNN is. We hypothesize that it will be accurate when segmenting the dog and cat images from the other datasets. If we find that this model isn’t as accurate, we will try training it on some of the images from the other datasets as well to see if it improves accuracy significantly. <br>
+We hypothesize that it will be accurate when segmenting the dog and cat images from the other datasets. If we found that this model wasn't as accurate, we planned to train it on some of the images from other datasets as well to see if accuracy imporroved. However, the Mask R-CNN model pre-trained on COCO was effective in segmenting out cat and dog images pretty accurately. Using the demo code from the original author of the Mask R-CNNs, we were able to successfully segment out objects in custom images. We processed the output futher to remove bounding boxes and segmentation masks that did not correspond to the dog and cat classes. We then extract pixels corresponing to the remaining masks, and use these pixel values to compute a feature representation of the object. <br>
 <h5>Foreground Feature Representation</h5>
 We have implemented various feature extractors based on color and texture, and we will experiment with which combination of those feature extractors provide the best clustering result. <br>
 <h5>Distance Function</h5>
