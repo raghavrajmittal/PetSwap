@@ -114,8 +114,10 @@ We cluster images of dogs and cats separately by histogram similarity. We will s
 We will divide the dataset into a 80% "training" and 20% testing split. In this case, the training data is the pre-clustered images. In order to test the functionality of our application, we will take the testing data and measure the sum of squared errors (SSE) of the clusters as well as the similarity between the input image and the returned output image.
 <br><br>
 <h4>Datasets</h4>
-We plan to use existing datasets containing images of cats and dogs. We are using a pre-trained Mask R-CNN for image segmentation as mentioned above. This is trained on the <a href='http://cocodataset.org'>COCO dataset</a>.<br>We also have a dataset of cat images, the <a href="https://archive.org/details/CAT_DATASET">Cat Dataset</a>, which includes 10,000 cat images. Lastly, we have a dataset of dog images, the <a href="http://vision.stanford.edu/aditya86/ImageNetDogs/">Stanford Dogs Dataset</a>, which includes over 20,000 images.
-<br>Additionally, if needed, we can scrape Google Images for more images if we find the datasets do not contain enough images.
+We use two main datasets--one containing images of cats and the other containing images of dogs. The <a href="https://archive.org/details/CAT_DATASET">Cat Dataset</a> includes 10,000 cat images and the <a href="http://vision.stanford.edu/aditya86/ImageNetDogs/">Stanford Dogs Dataset</a> includes over 20,000 images of dogs, classified by breed.
+Before we can use these datasets to train our k-means clusters, we must first clean the data. This involves extracting images from the dog and cat datasets while also ignoring other metadata files. The dog dataset must be shuffled so that the images are no longer separated by breed.
+Once we clean the two datasets, we split each dataset into a training and testing set. The data is now prepared for the Experimental Setup. 
+<br><br>As a side note, we are using a pre-trained Mask R-CNN for image segmentation as mentioned above. This is trained on the <a href='http://cocodataset.org'>COCO dataset</a>. 
 <br><br>
 <h4>Existing Code</h4>
 We plan to use code from several GitHub repositories:
