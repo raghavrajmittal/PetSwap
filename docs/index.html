@@ -119,11 +119,10 @@ Once we clean the two datasets, we split each dataset into a training and testin
 <br><br>As a side note, we are using a pre-trained Mask R-CNN for image segmentation as mentioned above. This is trained on the <a href='http://cocodataset.org'>COCO dataset</a>.
 <br><br>
 <h4>Existing Code</h4>
+The main libraries that we plan on using are <a href="https://scikit-image.org/">scikit-image</a> and <a href="https://opencv.org/">OpenCV</a>.
 We plan to use code from several GitHub repositories:
 <ul>
 <li><a href="https://github.com/matterport/Mask_RCNN">Mask R-CNN</a></li>
-<li><a href="https://github.com/pochih/CBIR">Content-based image retrieval (CBIR) system</a></li>
-<li><a href="https://docs.opencv.org/3.4/d8/d83/tutorial_py_grabcut.html">GrabCut algorithm</a></li>
 </ul>
 Also, we plan to use one of the following clustering algorithms:
 <ul>
@@ -133,7 +132,7 @@ Also, we plan to use one of the following clustering algorithms:
 </ul>
 <br>
 <h4>Implementation Details</h4>
-We are implementing the pipeline to solve the problem end-to-end. Specifically, we need to create a useful image representation that captures the key information about the images. This could be a combination of texture, color, etc.
+We are implementing the pipeline to solve the problem end-to-end. Specifically, we need to create a useful image representation that captures the key information about the images. This is be a combination of texture and color to represent the fur of the pet..
 
 <br><br>
 <h4>Defining Success</h4>
@@ -142,11 +141,11 @@ Mathematically, we define success for the project to be the elbow of the k vs SS
 <br><br>
 <h4>Experiments</h4>
 <h5>Mask R-CNN</h5>
-We hypothesize that it will be accurate when segmenting the dog and cat images from the other datasets. If we found that this model wasn't as accurate, we planned to train it on some of the images from other datasets as well to see if accuracy imporroved. However, the Mask R-CNN model pre-trained on COCO was effective in segmenting out cat and dog images pretty accurately. Using the demo code from the original author of the Mask R-CNNs, we were able to successfully segment out objects in custom images. We processed the output futher to remove bounding boxes and segmentation masks that did not correspond to the dog and cat classes. We then extract pixels corresponing to the remaining masks, and use these pixel values to compute a feature representation of the object. <br>
+We hypothesized that it will be accurate when segmenting the dog and cat images from the other datasets. If we found that this model wasn't as accurate, we planned to train it on some of the images from other datasets as well to see if accuracy imporroved. However, the Mask R-CNN model pre-trained on COCO was effective in segmenting out cat and dog images pretty accurately. Using the demo code from the original author of the Mask R-CNNs, we were able to successfully segment out objects in custom images. We processed the output futher to remove bounding boxes and segmentation masks that did not correspond to the dog and cat classes. We then extract pixels corresponing to the remaining masks, and use these pixel values to compute a feature representation of the object. <br>
 <h5>Foreground Feature Representation</h5>
 We have implemented various feature extractors based on color and texture, and we will experiment with which combination of those feature extractors provide the best clustering result. <br>
 <h5>Distance Function</h5>
-We can experiment with using different distance functions. To calculate similarity between histograms, two common functions are Euclidean distance and chi-squared. Unlike Euclidean which penalizes aboslute difference, chi-squared penalizes relative difference. Therefore, we expect the final clusters that result from using these two distance functions to be quite different. <br>
+We can experiment with using different distance functions. However, with our feature representation, we believe that Euclidean distance will be the best option. We expect the final clusters that result from using these two distance functions to be quite different. <br>
 <h5>Clustering Algorithm</h5>
 There are details of our clustering process that we need to determine through experiments. First, we need to decide whether we would cluster the dogs and cats separately or all together.<br>
 Next, we would experiment with the clustering methods. We can try both hard and soft clustering. Hard clustering assigns each point to a cluster definitively, soft clustering uses a probabilistic approach to assign probabilities of belonging to each cluster for each point. Both could provide interesting results in this project since we expect hard clustering to give cleaner results faster but soft clustering to perhaps find some insights missing from hard clustering.<br>
