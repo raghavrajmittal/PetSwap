@@ -74,8 +74,10 @@ Planned pipeline of Pet Swap
 <div style="text-align: center;">
 <img style="height: 200px;" alt="" src="img/teaser_figure.png">
 <br>
-Proposed input-output pair
+Proposed output
 </div>
+
+
 
 
 
@@ -102,7 +104,7 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 Our system contains three distinct components: animal image segmentation, color/texture representation, and clustering. With these three steps we will be able to take any input image of a dog or a cat and output an image with the most similar color and texture. We can simply query our pre-trained clusters with the color/texture representation of the image and return the closest image.
 <br><br>
 <h4>Animal Image Segmentation</h4>
-We will use <a href='https://github.com/matterport/Mask_RCNN'>Mask R-CNN</a> to segment the animal out of the image. This model has already been trained on the COCO dataset, which contains color images and segmentation masks of dogs and cats, among many other objects. Initially, we will use Mask R-CNN to segment animals out of our two datasets (see Datasets subsection under Experiments and Results). We will feed the segmented animals into our texture/color histogram generator and map each feature representation to the image using a dictionary.
+We use <a href='https://github.com/matterport/Mask_RCNN'>Mask R-CNN</a> to segment the animal out of the image. This model has already been trained on the COCO dataset, which contains color images and segmentation masks of dogs and cats (among many other objects). We used Mask R-CNN to segment animals out of our two datasets (see Datasets subsection under Experiments and Results). The next step is to feed the segmented animals into our texture/color histogram generator and map each feature representation to the image using a dictionary.
 <br><br>
 <h4>Color/Texture Representation</h4>
 Once we produce the segmented animal image, we create histograms from the image using a variety of feature extraction techniques. We will experiment with these <a href='https://github.com/pochih/CBIR'>feature representations</a> to determine the best possible representation for animal images. The first two we will test are color-based and texture-based feature extraction. We suspect that a fusion of these two features will produce the best clustering result. We then feed the resulting color/texture histograms for each image as input to the next step - the clustering algorithm.
