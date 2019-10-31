@@ -1,4 +1,4 @@
-#/usr/bin/bash
+#!/usr/bin/bash
 
 wget "https://archive.org/download/CAT_DATASET/CAT_DATASET_01.zip"
 wget "https://archive.org/download/CAT_DATASET/CAT_DATASET_02.zip"
