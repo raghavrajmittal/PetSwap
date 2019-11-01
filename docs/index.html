@@ -35,7 +35,7 @@ color: #FF9900;
 <!-- Title and Name -->
 <h1>PetSwap</h1>
 <span style="font-size: 20px; line-height: 1.5em;"><strong>Hemanth Chittanuru (hchittanuru3),
-  Kenny Scharm (kscharm3), Raghav Raj Mittal (rmittal34), Sarah Li (903191108)</strong></span><br>
+  Kenny Scharm (kscharm3), Raghav Raj Mittal (rmittal34), Sarah Li (sli469)</strong></span><br>
 <span style="font-size: 18px; line-height: 1.5em;">CS 6476 Computer Vision - Class Project</span><br>
 <span style="font-size: 18px; line-height: 1.5em;">Georgia Tech, Fall 2019</span>
 <hr>
@@ -160,12 +160,28 @@ Using the Mask R-CNN implementation, and updating it to detect cats and dogs onl
   <img style="height: 200px;" alt="" src="img/mask_rcnn_output.png">
   <br>
   Output of Mask R-CNN
-  </div>
+</div>
+<br><br><br>
+We also created a demo application using Flask and HTML, since these tools integrate with our Python code seamlessly. The user can input an image and press a button to send a POST request to the method that calls our pipeline to retrieve the matching image. The application provides a manual method to conduct end-to-end testing of the pipeline using new input images.
 
+<div style="text-align: center;">
+  <img style="height: 200px;" alt="" src="img/interface.png">
+  <br>
+</div>
+
+<br><br>
+We added initial clustering code for k-means, which runs on dummy data. The next step is to replace the input with the real data consisting of image feature representations. One challenge with the real input is in visualizing the clusters, since the feature representation contains more than two dimensions.
+
+
+<div style="text-align: center;">
+  <img style="height: 200px;" alt="" src="img/dummy_clustering.png">
+  <br>
+  Clustering on dummy data
+</div>
 
   <br><br><br>
 <h2>Conclusion/Future Work</h2>
-We have quite a few things to achieve for our final project update. The first thing we have to do run clustering on the feature representations of the images to ensure that our feature representations accurately represent the image content we are trying to retrieve. This can also help us in ensuring that the specifications of our clustering algorithm are good. Based on this, we can update our feature representation and clustering accordingly. We also need to implement an effective way of storing our data such that it can be accessed easily, and information about the closest cluster center and feature representation can be stored. Lastly, we need to create an interface for our project so it can be easily used.
+We have quite a few things to achieve for our final project update. The first thing we have to do is replace the clustering input with feature representations of the images to ensure that our feature representations accurately represent the image content we are trying to retrieve. This can also help ensure that the specifications of our clustering algorithm are good. Based on this, we can update our feature representation and clustering accordingly, including running clustering experiments to find optimal parameter values as well as testing various clustering algorithms. We also need to implement an effective way of storing our data such that it can be accessed easily, and information about the closest cluster center and feature representation can be stored. Lastly, we need to connect our project interface to our pipeline so that we can perform end-to-end testing.
 
 <br><br><br>
 <h2>References</h2>
