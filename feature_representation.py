@@ -51,10 +51,16 @@ def get_hsv_features(img, mask):
     hist_mask = np.zeros(mask.shape).astype(np.uint8)
     hist_mask[~mask] = 0
     hist_mask[mask] = 255
-    h = cv2.calcHist([img], channels=[0], mask=hist_mask[:,:,0], histSize=[8], ranges=[0, 8])/np.max(img[:,:,0])
-    s = cv2.calcHist([img], channels=[1], mask=hist_mask[:,:,1], histSize=[2], ranges=[0, 2])/np.max(img[:,:,1])
-    v = cv2.calcHist([img], channels=[2], mask=hist_mask[:,:,2], histSize=[2], ranges=[0, 2])/np.max(img[:,:,2])
-    return np.concatenate((h, s, v), axis = None)
+    h = cv2.calcHist(
+        [img], channels=[0], mask=hist_mask[:, :, 0], histSize=[8], ranges=[0, 8]
+    ) / np.max(img[:, :, 0])
+    s = cv2.calcHist(
+        [img], channels=[1], mask=hist_mask[:, :, 1], histSize=[2], ranges=[0, 2]
+    ) / np.max(img[:, :, 1])
+    v = cv2.calcHist(
+        [img], channels=[2], mask=hist_mask[:, :, 2], histSize=[2], ranges=[0, 2]
+    ) / np.max(img[:, :, 2])
+    return np.concatenate((h, s, v), axis=None)
 
 
 def get_glcm_features(img, mask):
@@ -62,11 +68,7 @@ def get_glcm_features(img, mask):
     mask = np.squeeze(mask)
     img[~mask] = -1
     glcm = greycomatrix(
-        img,
-        [1],
-        [0, np.pi / 4, np.pi / 2, 3 * np.pi / 4],
-        symmetric=True,
-        normed=True,
+        img, [1], [0, np.pi / 4, np.pi / 2, 3 * np.pi / 4], symmetric=True, normed=True
     )[1:, 1:, :, :]
     return greycoprops(glcm)
 

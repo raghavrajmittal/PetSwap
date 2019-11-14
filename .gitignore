@@ -112,3 +112,4 @@ dogs/
 *.tar
 tester.py
 *.h5
+*.icloud
