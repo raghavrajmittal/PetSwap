@@ -1,3 +1,4 @@
+'''helper class to get feature representation of a given image'''
 import cv2
 import numpy as np
 from skimage.feature import greycomatrix, greycoprops
@@ -77,4 +78,4 @@ def get_gabor_features(img, mask):
     pass
 
 
-print(feature_extraction(io.imread("test_cat.jpg")))
+# print(feature_extraction(io.imread("test_cat.jpg")))
