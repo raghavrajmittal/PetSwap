@@ -1,7 +1,7 @@
 '''get training data in the form of arr[tuple1, tuple2, ...]
 where tuple is: (path_to_image, 'cat'/'dog', features)'''
 
-from feature_extraction import feature_extraction
+from feature_representation import feature_extraction
 import glob
 import skimage.io
 
