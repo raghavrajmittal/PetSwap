@@ -23,9 +23,11 @@ def split_data(dataset, split_val):
     i = 0
     while i < len(dataset):
         if i < int(split_val * len(dataset)):
-            copy(dataset[i], "./train")
+            if not os.path.exists(os.path.join("./train", dataset[i])):
+                copy(dataset[i], "./train")
         else:
-            copy(dataset[i], "./test")
+            if not os.path.exists(os.path.join("./test", dataset[i])):
+                copy(dataset[i], "./test")
         i = i + 1
     os.chdir("..")
 
