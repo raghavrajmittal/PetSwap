@@ -11,6 +11,7 @@ def get_features(dir, type):
     fnames = glob.glob(dir + '*.jpg')
     featureArr = None
     for fname in fnames:
+        print(fname)
         im = skimage.io.imread(fname)
         features = feature_extraction(im)
         if featureArr is None:

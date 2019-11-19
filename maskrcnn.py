@@ -52,7 +52,7 @@ def get_masks(img):
         IMAGES_PER_GPU = 1
 
     config = InferenceConfig()
-    config.display()
+    #config.display()
 
     # ## Create Model and Load Trained Weights
     model = modellib.MaskRCNN(
@@ -159,7 +159,7 @@ def get_masks(img):
     # Load a random image from the images folder and visualize results
     file_names = next(os.walk(IMAGE_DIR))[2]
     # image = skimage.io.imread(os.path.join(IMAGE_DIR, random.choice(file_names)))
-    results = model.detect([img], verbose=1)  # Run detection
+    results = model.detect([img], verbose=0)  # Run detection
 
     # filter out non chosen classes
     chosen_classes = [16, 17]  # class indices for cat, dog
