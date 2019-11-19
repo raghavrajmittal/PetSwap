@@ -1,5 +1,4 @@
-'''get training data in the form of arr[tuple1, tuple2, ...]
-where tuple is: (path_to_image, 'cat'/'dog', features)'''
+'''save training data in an npz file'''
 
 from feature_representation import feature_extraction
 import glob
@@ -7,19 +6,24 @@ import numpy as np
 import skimage.io
 
 
-# get features for dogs
+# get features given a dataset
 def get_features(dir, type):
     fnames = glob.glob(dir + '*.jpg')
-    featureArr = []
+    featureArr = None
     for fname in fnames:
         im = skimage.io.imread(fname)
         features = feature_extraction(im)
-        featureArr.append((fname, type, features))
-        return featureArr
+        if featureArr is None:
+            featureArr = features
+        else:
+            featureArr = np.concatenate((featureArr, features), axis=0)
+    return fnames, featureArr
 
 if __name__ == "__main__":
-    cats_train_dir = 'cats/train/'
     dogs_train_dir = 'dogs/train/'
-    dog_features = get_features(dogs_train_dir, 'dog')
-    cat_features = get_features(cats_train_dir, 'cat')
-    np.savez('features.npz', dog_features=dog_features, cat_features=cat_features)
+    fnames, dog_features = get_features(dogs_train_dir, 'dog')
+    np.savez('dog_features.npz', image_names=fnames, dog_features=dog_features)
+
+    cats_train_dir = 'cats/train/'
+    fnames, cat_features = get_features(cats_train_dir, 'cat')
+    np.savez('cat_features.npz', image_names=fnames, cat_features=cat_features)

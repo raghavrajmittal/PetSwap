@@ -114,3 +114,4 @@ tester.py
 *.h5
 *.icloud
 config.py
+*.npz
