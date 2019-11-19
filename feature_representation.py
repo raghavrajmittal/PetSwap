@@ -1,4 +1,4 @@
-'''helper class to get feature representation of a given image'''
+"""helper class to get feature representation of a given image"""
 import cv2
 import numpy as np
 from skimage.feature import greycomatrix, greycoprops
@@ -24,7 +24,8 @@ def get_color_features(img, mask):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     img = img.astype(float)
     other = other.astype(float)
-    mask = np.tile(mask, (1, 1, 3))
+    if mask.shape[2] != 3:
+        mask = np.tile(mask, (1, 1, 3))
     img[~mask] = np.NaN
     other[~mask] = np.NaN
     red = img[:, :, 0]
@@ -77,5 +78,7 @@ def get_glcm_features(img, mask):
 def get_gabor_features(img, mask):
     pass
 
-
+if __name__ == '__main__':
+    img = io.imread('test_cat.jpg')
+    feature_extraction(img)
 # print(feature_extraction(io.imread("test_cat.jpg")))
