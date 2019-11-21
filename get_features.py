@@ -8,23 +8,27 @@ import skimage.io
 
 # get features given a dataset
 def get_features(dir, type):
-    fnames = glob.glob(dir + '*.jpg')
+    fnames = glob.glob(dir + '*.jpg')[:6]
+    files = []
     featureArr = None
     for fname in fnames:
         print(fname)
         im = skimage.io.imread(fname)
-        features = feature_extraction(im)
-        if featureArr is None:
-            featureArr = features
-        else:
-            featureArr = np.concatenate((featureArr, features), axis=0)
-    return fnames, featureArr
+        features = feature_extraction(im)   
+        if features is not None:
+            files.append(fname)
+            if featureArr is None:
+                featureArr = features
+            else:
+                featureArr = np.append(featureArr, features, axis=0)
+        print(featureArr.shape)
+    return files, featureArr
 
 if __name__ == "__main__":
-    dogs_train_dir = 'dogs/train/'
+    dogs_train_dir = 'dogs/test/'
     fnames, dog_features = get_features(dogs_train_dir, 'dog')
     np.savez('dog_features.npz', image_names=fnames, dog_features=dog_features)
 
-    cats_train_dir = 'cats/train/'
+    cats_train_dir = 'cats/test/'
     fnames, cat_features = get_features(cats_train_dir, 'cat')
     np.savez('cat_features.npz', image_names=fnames, cat_features=cat_features)
