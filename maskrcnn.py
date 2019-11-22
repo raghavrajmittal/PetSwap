@@ -29,9 +29,10 @@ def get_masks(fnames):
     # ## Configurations
     # We'll be using a model trained on the MS-COCO dataset. The configurations of this model are in the ```CocoConfig``` class in ```coco.py```.
     # For inferencing, modify the configurations a bit to fit the task. To do so, sub-class the ```CocoConfig``` class and override the attributes you need to change.
-    class InferenceConfig(coco.CocoConfig):         # Batch size = GPU_COUNT * IMAGES_PER_GPU
+    class InferenceConfig(coco.CocoConfig):
+        # Batch size = GPU_COUNT * IMAGES_PER_GPU
         GPU_COUNT = 1
-        IMAGES_PER_GPU = 1
+        IMAGES_PER_GPU = len(fnames)
 
     config = InferenceConfig()
     #config.display()

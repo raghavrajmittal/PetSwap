@@ -2,8 +2,9 @@
 import cv2
 import numpy as np
 from skimage.feature import greycomatrix, greycoprops
-from skimage import io
+import skimage.io
 import maskrcnn
+import glob
 
 
 def feature_extraction(img):
@@ -82,7 +83,41 @@ def get_gabor_features(img, mask):
     pass
 
 
+# run feature extraction on images in a given directory
+def feature_extraction_bulk(dir):
+    fnames = glob.glob(dir + '*.jpg')[:4]
+    results = maskrcnn.get_masks(fnames)     # Get pixels that are masked
+
+    files = []
+    featureArr = []
+    for result, fname in zip(results, fnames):
+        try:
+            mask = result["masks"][:, :, 0]
+            img = skimage.io.imread(fname)
+            print("img", img)
+            color_features = get_color_features(img, mask)
+            hist_features = get_hsv_features(img, mask)
+            glcm_features = get_glcm_features(img, mask)
+            fused_features = np.concatenate((color_features, hist_features, glcm_features[0]), axis=None)[np.newaxis, :] # Fuse the feature representations
+            files.append(fname)
+            featureArr.append(fused_features)
+        except:
+            pass
+    return files, np.array(featureArr)
+
+
+def save_training_features():
+    dogs_train_dir = 'dogs/test/'
+    image_names, dog_features = feature_extraction_bulk(dogs_train_dir)
+    np.savez('dog_features.npz', image_names=image_names, dog_features=dog_features)
+
+    cats_train_dir = 'cats/test/'
+    image_names, cat_features = feature_extraction_bulk(cats_train_dir)
+    np.savez('cat_features.npz', image_names=image_names, cat_features=cat_features)
+
+
+
 if __name__ == "__main__":
-    img = io.imread("dogs/train/n02106166_1429.jpg")
-    feature_extraction(img)
-# print(feature_extraction(io.imread("test_cat.jpg")))
+    # img = io.imread("dogs/train/n02106166_1429.jpg")
+    # feature_extraction(img)
+    save_training_features()
