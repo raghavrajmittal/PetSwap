@@ -107,11 +107,11 @@ def feature_extraction_bulk(dir):
 
 
 def save_training_features():
-    dogs_train_dir = 'dogs/test/'
+    dogs_train_dir = 'dogs/train/'
     image_names, dog_features = feature_extraction_bulk(dogs_train_dir)
     np.savez('dog_features.npz', image_names=image_names, dog_features=dog_features)
 
-    cats_train_dir = 'cats/test/'
+    cats_train_dir = 'cats/train/'
     image_names, cat_features = feature_extraction_bulk(cats_train_dir)
     np.savez('cat_features.npz', image_names=image_names, cat_features=cat_features)
 
