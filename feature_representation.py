@@ -85,7 +85,7 @@ def get_gabor_features(img, mask):
 
 # run feature extraction on images in a given directory
 def feature_extraction_bulk(dir):
-    fnames = glob.glob(dir + '*.jpg')[:4]
+    fnames = glob.glob(dir + '*.jpg')
     results = maskrcnn.get_masks(fnames)     # Get pixels that are masked
 
     files = []
@@ -100,6 +100,7 @@ def feature_extraction_bulk(dir):
             glcm_features = get_glcm_features(img, mask)
             fused_features = np.concatenate((color_features, hist_features, glcm_features[0]), axis=None)[np.newaxis, :] # Fuse the feature representations
             files.append(fname)
+            print(fname)
             featureArr.append(fused_features)
         except:
             pass
