@@ -94,7 +94,6 @@ def feature_extraction_bulk(dir):
         try:
             mask = result["masks"][:, :, 0]
             img = skimage.io.imread(fname)
-            print("img", img)
             color_features = get_color_features(img, mask)
             hist_features = get_hsv_features(img, mask)
             glcm_features = get_glcm_features(img, mask)
