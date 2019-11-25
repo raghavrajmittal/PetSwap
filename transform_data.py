@@ -9,6 +9,7 @@ def get_data(dataset_dir):
     images_list = []
     for d in os.walk(dataset_dir):
         for file in os.listdir(d[0]):
+            print(file)
             if file.endswith(".jpg"):
                 images_list.append(os.path.join(os.getcwd(), d[0], file))
     shuffle(images_list)
