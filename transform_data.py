@@ -9,10 +9,10 @@ def get_data(dataset_dir):
     images_list = []
     for d in os.walk(dataset_dir):
         for file in os.listdir(d[0]):
-            print(file)
             if file.endswith(".jpg"):
                 images_list.append(os.path.join(os.getcwd(), d[0], file))
     shuffle(images_list)
+    print(images_list)
     return images_list
 
 
@@ -25,9 +25,11 @@ def split_data(dataset, split_val):
     while i < len(dataset):
         if i < int(split_val * len(dataset)):
             if not os.path.exists(os.path.join("./train", dataset[i])):
+                print(dataset[i])
                 copy(dataset[i], "./train")
         else:
             if not os.path.exists(os.path.join("./test", dataset[i])):
+                print(dataset[i])
                 copy(dataset[i], "./test")
         i = i + 1
     os.chdir("..")
