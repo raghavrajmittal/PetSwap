@@ -115,3 +115,5 @@ tester.py
 *.icloud
 config.py
 *.npz
+dog_features/
+cat_features/

@@ -88,8 +88,8 @@ def feature_extraction_bulk(dir, type):
 	fnames = glob.glob(dir + '*.jpg')
 	fnames = np.sort(fnames)
 
-	bs = 20 	# process in batches of 20
-	for i in range(0, len(fnames)//bs + 1, 1):
+	bs = 10 	# process in batches of 20
+	for i in range(184, len(fnames)//bs + 1, 1):
 		chosen_fnames = fnames[i * bs: (i + 1) * bs]
 
 		files = []
@@ -114,12 +114,10 @@ def feature_extraction_bulk(dir, type):
 
 
 def save_training_features():
-	dogs_train_dir = 'dogs/train/'
-	feature_extraction_bulk(dogs_train_dir, "dog")
-
+	#dogs_train_dir = 'dogs/train/'
+	#feature_extraction_bulk(dogs_train_dir, "dog")
 	cats_train_dir = 'cats/train/'
 	feature_extraction_bulk(cats_train_dir, "cat")
-
 
 
 if __name__ == "__main__":
