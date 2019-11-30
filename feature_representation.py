@@ -9,8 +9,11 @@ import glob
 
 def feature_extraction(img):
 	# Get pixels that are masked
-	results = maskrcnn.get_masks(img)
+	images = []
+	images.append(img)
+	results = maskrcnn.get_masks(images)
 	try:
+		img = skimage.io.imread(images[0])
 		mask = results[0]["masks"][:, :, 0]
 		# Get color representation
 		color_features = get_color_features(img, mask)
@@ -89,7 +92,7 @@ def feature_extraction_bulk(dir, type):
 	fnames = np.sort(fnames)
 
 	bs = 10 	# process in batches of 20
-	for i in range(184, len(fnames)//bs + 1, 1):
+	for i in range(220, len(fnames)//bs + 1, 1):
 		chosen_fnames = fnames[i * bs: (i + 1) * bs]
 
 		files = []
@@ -114,10 +117,10 @@ def feature_extraction_bulk(dir, type):
 
 
 def save_training_features():
-	#dogs_train_dir = 'dogs/train/'
-	#feature_extraction_bulk(dogs_train_dir, "dog")
-	cats_train_dir = 'cats/train/'
-	feature_extraction_bulk(cats_train_dir, "cat")
+	dogs_train_dir = 'dogs/train/'
+	feature_extraction_bulk(dogs_train_dir, "dog")
+	#cats_train_dir = 'cats/train/'
+	#feature_extraction_bulk(cats_train_dir, "cat")
 
 
 if __name__ == "__main__":
