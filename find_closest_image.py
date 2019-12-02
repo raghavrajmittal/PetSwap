@@ -3,12 +3,17 @@ from feature_representation import feature_extraction
 import numpy as np
 from k_means_clustering import pairwise_distance
 
-def find_closest_image(image_path, type):
+def find_closest_image(image_path, type, clustering='GMM'):
     features = feature_extraction(image_path)
-    with open('kmeans.pkl', 'rb') as f:
-        kmeans = pickle.load(f)
-    label = kmeans.predict(features)
-    labels = np.load('labels.npy')
+    if clustering == 'kmeans':
+        with open('kmeans.pkl', 'rb') as f:
+            model = pickle.load(f)
+            labels = np.load('labels.npy')
+    elif clustering == 'GMM':
+        with open('gaussian.pkl', 'rb') as f:
+            model = pickle.load(f)
+            labels = np.load('gaussian_labels.npy')
+    label = model.predict(features)
     cluster_data = np.load('cluster_data.npz')
     files = cluster_data['image_names']
     raw_features = cluster_data['features']
@@ -22,4 +27,4 @@ def find_closest_image(image_path, type):
         if file[:4] != type:
             return file
 
-print(find_closest_image('dogs/test/n02116738_9924.jpg', 'dogs'))
+find_closest_image('dogs/test/n02116738_9924.jpg', 'dogs', 'GMM')
