@@ -15,11 +15,6 @@ def find_closest_image(image_path, type, clustering='GMM'):
             model = pickle.load(f)
             labels = np.load('gaussian_labels.npy')
             label = model.predict(features)
-    elif clustering == 'kmodes':
-        with open('kmodes.pkl', 'rb') as f:
-            model = pickle.load(f)
-            labels = np.load('kmodes_labels.npy')
-            label = model.fit_predict(features)
     elif clustering == 'meanshift':
         with open('meanshift.pkl', 'rb') as f:
             model = pickle.load(f)
