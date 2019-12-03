@@ -118,3 +118,4 @@ config.py
 dog_features/
 cat_features/
 *.npy
+*.pkl
