@@ -154,12 +154,14 @@ We processed the output futher to remove bounding boxes and segmentation masks t
 One major drawback of Mask R-CNN is the compute power and processing time it requires to segment images. The GPU we used simply could not handle Tensorflow models with 10,000+ images without running out of memory. For this reason, we used a subset of the dog and cat data. We ended up clustering roughly 8,800 images, where half were dog images and half were cat images.
 <br>
 <h5>Foreground Feature Representation</h5>
-We have implemented various feature extractors based on color and texture, and have experimented with which combination of those feature extractors provide the best clustering result. <br>
+We implemented various feature extractors based on color and texture and experimented with which combination of those feature extractors provide the best clustering result. The best representation was the 24-dimensional vector described in our approach above.
+<br>
 <h5>Distance Function</h5>
-When determining the similarity of two images, there are a number of distance metrics that could be used. With our feature representation, Euclidean distance is the best option. The results are shown in the next section. <br>
+When determining the similarity of two images, there are a number of distance metrics that could be used. With our feature representation, Euclidean distance is the best option. The results are shown in the next section.
+<br>
 <h5>Clustering Algorithm</h5>
-First, we need to decide whether we would cluster the dogs and cats separately or all together.<br>
-Next, we would experiment with the clustering methods. We can try both hard and soft clustering. Hard clustering assigns each point to a cluster definitively, soft clustering uses a probabilistic approach to assign probabilities of belonging to each cluster for each point. Both could provide interesting results in this project since we expect hard clustering to give cleaner results faster but soft clustering to perhaps find some insights missing from hard clustering.<br>
+We chose to cluster all images together, with the hopes that our cluster centers would more accurately model color/feature similarity using more data. Part of our approach was to experiment with different clustering methods.
+We attempted both hard (k-means and mean shift) and soft (GMM) clustering methods. Hard clustering assigns each point to a cluster definitively, whereas soft clustering uses a probabilistic approach to assign probabilities of belonging to each cluster for each point. We expected hard clustering to give cleaner results, but soft clustering to find some insights missing from hard clustering.
 Another detail would be what hard clustering algorithm we would utilize. We would decide between centroid-based and density-based, i.e. mean clustering vs. mode clustering. We would figure out these two details by comparing the accuracy of each implementation. <br>
 Additionally, we can try varying the value of k in hard clustering. This is key to finding meaningful groups in the dataset. If the clusters are too small, similar images may not be grouped together. On the other, clusters that are too large will group dissimilar images together. We would decide this using the elbow method, trying to find the optimal value of k.
 
