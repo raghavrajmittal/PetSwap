@@ -9,11 +9,17 @@ def find_closest_image(image_path, type, clustering='GMM'):
         with open('kmeans.pkl', 'rb') as f:
             model = pickle.load(f)
             labels = np.load('labels.npy')
+            label = model.predict(features)
     elif clustering == 'GMM':
         with open('gaussian.pkl', 'rb') as f:
             model = pickle.load(f)
             labels = np.load('gaussian_labels.npy')
-    label = model.predict(features)
+            label = model.predict(features)
+    elif clustering == 'meanshift':
+        with open('meanshift.pkl', 'rb') as f:
+            model = pickle.load(f)
+            labels = np.load('meanshift_labels.npy')
+            label = model.predict(features)
     cluster_data = np.load('cluster_data.npz')
     files = cluster_data['image_names']
     raw_features = cluster_data['features']
@@ -27,4 +33,4 @@ def find_closest_image(image_path, type, clustering='GMM'):
         if file[:4] != type:
             return file
 
-find_closest_image('dogs/test/n02116738_9924.jpg', 'dogs', 'GMM')
+find_closest_image('dogs/test/n02116738_9924.jpg', 'dogs', 'meanshift')

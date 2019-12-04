@@ -122,14 +122,15 @@ Once we clean the two datasets, we split each dataset into a training and testin
 The main libraries that we plan on using are <a href="https://scikit-image.org/">scikit-image</a> and <a href="https://opencv.org/">OpenCV</a>.
 We plan to use code from several GitHub repositories:
 <ul>
-<li><a href="https://github.com/matterport/Mask_RCNN">Mask R-CNN</a></li>
+  <li><a href="https://github.com/matterport/Mask_RCNN">Mask R-CNN</a></li>
 </ul>
 Also, we plan to use one of the following clustering algorithms:
 <ul>
-<li><a href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html">k-means</a></li>
-<li href="https://github.com/nicodv/kmodes"><a>k-modes</a></li>
-<li><a href="https://scikit-learn.org/stable/modules/mixture.html">EM</a></li>
+  <li><a href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html">k-means</a></li>
+  <li href="https://github.com/nicodv/kmodes"><a>k-modes</a></li>
+  <li><a href="https://scikit-learn.org/stable/modules/mixture.html">EM</a></li>
 </ul>
+
 <br>
 <h4>Implementation Details</h4>
 We are implementing the pipeline to solve the problem end-to-end. Specifically, we need to create a useful image representation that captures the key information about the images. This is be a combination of texture and color to represent the fur of the pet..
@@ -145,7 +146,7 @@ We hypothesized that it will be accurate when segmenting the dog and cat images 
 <h5>Foreground Feature Representation</h5>
 We have implemented various feature extractors based on color and texture, and we will experiment with which combination of those feature extractors provide the best clustering result. <br>
 <h5>Distance Function</h5>
-We can experiment with using different distance functions. However, with our feature representation, we believe that Euclidean distance will be the best option. We expect the final clusters that result from using these two distance functions to be quite different. <br>
+When determining the similarity of two images, there are a number of distance metrics that could be used. With our feature representation, Euclidean distance is the best option. The final clusters resulting from this distnace function seems reasonable. The results are shown in the next section. <br>
 <h5>Clustering Algorithm</h5>
 There are details of our clustering process that we need to determine through experiments. First, we need to decide whether we would cluster the dogs and cats separately or all together.<br>
 Next, we would experiment with the clustering methods. We can try both hard and soft clustering. Hard clustering assigns each point to a cluster definitively, soft clustering uses a probabilistic approach to assign probabilities of belonging to each cluster for each point. Both could provide interesting results in this project since we expect hard clustering to give cleaner results faster but soft clustering to perhaps find some insights missing from hard clustering.<br>
@@ -153,13 +154,19 @@ Another detail would be what hard clustering algorithm we would utilize. We woul
 Additionally, we can try varying the value of k in hard clustering. This is key to finding meaningful groups in the dataset. If the clusters are too small, similar images may not be grouped together. On the other, clusters that are too large will group dissimilar images together. We would decide this using the elbow method, trying to find the optimal value of k.
 
 <br><br><br>
-<h2>Qualitative Results</h2>
+<h2>Results</h2>
 Using the Mask R-CNN implementation, and updating it to detect cats and dogs only, we can produce the following succesful segmentation.
 <br><br>
 <div style="text-align: center;">
-  <img style="height: 200px;" alt="" src="img/mask_rcnn_output.png">
-  <br>
-  Output of Mask R-CNN
+  <div>
+    <img style="height: 200px;" alt="" src="img/mask_rcnn_input.jpg">
+    <br>Input to Mask R-CNN
+  </div>
+</br></br>
+  <div>
+    <img style="height: 200px;" alt="" src="img/mask_rcnn_output.png">
+    <br>Output of Mask R-CNN
+  </div>
 </div>
 <br><br><br>
 We also created a demo application using Flask and HTML, since these tools integrate with our Python code seamlessly. The user can input an image and press a button to send a POST request to the method that calls our pipeline to retrieve the matching image. The application provides a manual method to conduct end-to-end testing of the pipeline using new input images.
