@@ -131,8 +131,6 @@ In addition to these libraries, we use code from several GitHub repositories:
   <li><a href="https://github.com/pochih/CBIR">CBIR techniques</a></li>
 </ul>
 
-<br>
-
 <br><br>
 <h4>Defining Success</h4>
 Quantitatively, we define success for the project to be the elbow of the k vs SSE curve and having a distance of 10% (of the mean distance) between input and output images. We also qualitatively evaluate how close the dogs and cats look by have multiple people use our system and provide feedback.
@@ -141,7 +139,9 @@ Quantitatively, we define success for the project to be the elbow of the k vs SS
 <h4>Experiments</h4>
 <h5>Mask R-CNN</h5>
 We hypothesized that Mask R-CNN would be accurate when segmenting dog and cat images from the other datasets. Since the Mask R-CNN model was pre-trained on COCO, it was effective in accurately segmenting out cat and dog images. Using the demo code from the original author of Mask R-CNN, we were able to successfully segment out objects in custom images.
-We processed the output futher to remove bounding boxes and segmentation masks that did not correspond to the dog and cat classes. We then extracted pixels corresponing to the remaining masks, and use these pixel values to compute a feature representation of the object.
+We processed the output futher to remove bounding boxes and segmentation masks that did not correspond to the dog and cat classes.
+<br><br>
+We then extracted pixels corresponing to the remaining masks, and use these pixel values to compute a feature representation of the object.
 One major drawback of Mask R-CNN is the compute power and processing time it requires to segment images. The GPU we used simply could not handle Tensorflow models with 10,000+ images without running out of memory. For this reason, we used a subset of the dog and cat data. We ended up clustering roughly 8,800 images, where half were dog images and half were cat images.
 <br>
 <h5>Foreground Feature Representation</h5>
@@ -153,6 +153,7 @@ When determining the similarity of two images, there are a number of distance me
 <h5>Clustering Algorithm</h5>
 We chose to cluster all images together, with the hopes that our cluster centers would more accurately model color/feature similarity using more data. The first part of our approach was to experiment with different clustering methods.
 We attempted both hard (k-means and mean shift) and soft (GMM) clustering methods. Hard clustering assigns each point to a cluster definitively, whereas soft clustering uses a probabilistic approach to assign probabilities of belonging to each cluster for each point.
+<br><br>
 We expected hard clustering to give cleaner results, but soft clustering to discover new insights missing from hard clustering. The results from all three methods are shown below. To improve our model we tried varying the value of k in hard clustering techniques.
 This was key to finding meaningful groups in the dataset. If the clusters were too small, similar images were not as easy to find. On the other hand, clusters that were too large grouped dissimilar images together. We decided this using the elbow method, which finds the optimal value for k.
 <br>
