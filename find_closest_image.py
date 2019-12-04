@@ -33,4 +33,11 @@ def find_closest_image(image_path, type, clustering='GMM'):
         if file[:4] != type:
             return file
 
-find_closest_image('dogs/test/n02116738_9924.jpg', 'dogs', 'meanshift')
+img_path = 'dogs/test/n02102040_1178.jpg'
+kmeansimg = find_closest_image(img_path, 'dogs', 'kmeans')
+meanshiftimg = find_closest_image(img_path, 'dogs', 'meanshift')
+GMMimg = find_closest_image(img_path, 'dogs', 'GMM')
+print("test image: ", img_path)
+print("kmeans image: ", kmeansimg)
+print("meanshift image: ", meanshiftimg)
+print("GMM image: ", GMMimg)
