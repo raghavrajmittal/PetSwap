@@ -139,13 +139,6 @@ We implemented the pipeline to solve the problem end-to-end. Specifically, we cr
 <h4>Defining Success</h4>
 Quantitatively, we define success for the project to be the elbow of the k vs SSE curve and having a distance of 10% (of the mean distance) between input and output images. We also qualitatively evaluate how close the dogs and cats look by have multiple people use our system and provide feedback.
 
-<h4>Hypertuning</h4>
-<bold>k-means:</bold>
-<br>
-<bold>Gaussian mixture model:</bold>
-<br>
-<bold>Mean shift:</bold>
-
 <br><br>
 <h4>Experiments</h4>
 <h5>Mask R-CNN</h5>
@@ -160,10 +153,17 @@ We implemented various feature extractors based on color and texture and experim
 When determining the similarity of two images, there are a number of distance metrics that could be used. With our feature representation, Euclidean distance is the best option. The results are shown in the next section.
 <br>
 <h5>Clustering Algorithm</h5>
-We chose to cluster all images together, with the hopes that our cluster centers would more accurately model color/feature similarity using more data. Part of our approach was to experiment with different clustering methods.
-We attempted both hard (k-means and mean shift) and soft (GMM) clustering methods. Hard clustering assigns each point to a cluster definitively, whereas soft clustering uses a probabilistic approach to assign probabilities of belonging to each cluster for each point. We expected hard clustering to give cleaner results, but soft clustering to find some insights missing from hard clustering.
-Another detail would be what hard clustering algorithm we would utilize. We would decide between centroid-based and density-based, i.e. mean clustering vs. mode clustering. We would figure out these two details by comparing the accuracy of each implementation. <br>
-Additionally, we can try varying the value of k in hard clustering. This is key to finding meaningful groups in the dataset. If the clusters are too small, similar images may not be grouped together. On the other, clusters that are too large will group dissimilar images together. We would decide this using the elbow method, trying to find the optimal value of k.
+We chose to cluster all images together, with the hopes that our cluster centers would more accurately model color/feature similarity using more data. The first part of our approach was to experiment with different clustering methods.
+We attempted both hard (k-means and mean shift) and soft (GMM) clustering methods. Hard clustering assigns each point to a cluster definitively, whereas soft clustering uses a probabilistic approach to assign probabilities of belonging to each cluster for each point.
+We expected hard clustering to give cleaner results, but soft clustering to discover new insights missing from hard clustering. The results from all three methods are shown below. To improve our model we tried varying the value of k in hard clustering techniques.
+This was key to finding meaningful groups in the dataset. If the clusters were too small, similar images were not as easy to find. On the other hand, clusters that were too large grouped dissimilar images together. We decided this using the elbow method, which finds the optimal value for k.
+<br>
+<h5>Hypertuning</h5>
+<bold>k-means:</bold>
+<br>
+<bold>Gaussian mixture model:</bold>
+<br>
+<bold>Mean shift:</bold>
 
 <br><br><br>
 <h2>Results</h2>
