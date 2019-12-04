@@ -132,8 +132,6 @@ In addition to these libraries, we use code from several GitHub repositories:
 </ul>
 
 <br>
-<h4>Implementation Details</h4>
-We implemented the pipeline to solve the problem end-to-end. Specifically, we created a useful feature representation that captures the key color and texture information about the images.
 
 <br><br>
 <h4>Defining Success</h4>
@@ -143,7 +141,7 @@ Quantitatively, we define success for the project to be the elbow of the k vs SS
 <h4>Experiments</h4>
 <h5>Mask R-CNN</h5>
 We hypothesized that Mask R-CNN would be accurate when segmenting dog and cat images from the other datasets. Since the Mask R-CNN model was pre-trained on COCO, it was effective in accurately segmenting out cat and dog images. Using the demo code from the original author of Mask R-CNN, we were able to successfully segment out objects in custom images.
-We processed the output futher to remove bounding boxes and segmentation masks that did not correspond to the dog and cat classes. We then extract pixels corresponing to the remaining masks, and use these pixel values to compute a feature representation of the object.
+We processed the output futher to remove bounding boxes and segmentation masks that did not correspond to the dog and cat classes. We then extracted pixels corresponing to the remaining masks, and use these pixel values to compute a feature representation of the object.
 One major drawback of Mask R-CNN is the compute power and processing time it requires to segment images. The GPU we used simply could not handle Tensorflow models with 10,000+ images without running out of memory. For this reason, we used a subset of the dog and cat data. We ended up clustering roughly 8,800 images, where half were dog images and half were cat images.
 <br>
 <h5>Foreground Feature Representation</h5>
@@ -224,7 +222,8 @@ Here are the results of our proposed system given several input images using dif
 <br><br><br>
 
 <h2>Conclusion/Future Work</h2>
-In conclusion, we were able to output a similar looking cat/dog as the input image. When we tried multiple images, we saw that were able to achieve better results for dog images than cat images. There are various details we plan to work on and experiment with in the future. First, we want to try clustering dogs and cats separately, and seeing if that generates better matches. We also would look into bolstering the feature representation by using texture features such as a Gabor filter. After examination of our dataset, we saw that there were quite a few images that had poor lighting and had multiple animals in them that could alter the results of the system. So, another thing we would work on would be data cleaning. As mentioned above, we only used 8800 images for our training set, and we would aim to cluster more to generate better results. 
+In conclusion, we were successfully able to output similar looking cat/dogs given an input image with decent accuracy. When we tried multiple images, we saw that were able to achieve better results for dog images than cat images. There are various details we plan to work on and experiment with in the future. First, we want to try clustering dogs and cats separately to see if that generates better matches. We also would like to look into bolstering the feature representation by using texture features such as a Gabor filter.
+After examination of our dataset, we saw that there were quite a few images that had poor lighting and/or had multiple animals in them. This could significantly affect the results of the system. So, another improvement would be data cleaning. As mentioned above, we only used 8,800 images for our training set, and we would aim to cluster more to generate better results. 
 
 <br><br><br>
 <h2>References</h2>
