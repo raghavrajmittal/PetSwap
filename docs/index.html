@@ -160,13 +160,14 @@ This was key to finding meaningful groups in the dataset. If the clusters were t
 <h5>Hypertuning</h5>
 <b>k-means:</b> <br>
 Observing the below graph, we can see that there was not a smooth curve when we plotted SSE vs k. So, we chose k to be 440, which appeared to have a low enough error that straightened out as the value of k increased. <br>
-<img style="height: 400px;" alt="" src="img/kmeans_hypertuning.png">
-<br>
-<b>Gaussian mixture model:</b> <br>
-To choose the number of components in our Gaussian Mixture Model, we used <a href="https://en.wikipedia.org/wiki/Akaike_information_criterion">Akaike information criterion (AIC)</a> and <a href="https://en.wikipedia.org/wiki/Bayesian_information_criterion">Bayesian information criterion (BIC)</a>. The optimal number of clusters is one that minimizes AIC and BIC. Observing the below graph, we can say that it is around 15.
-<br>
-<img style="height: 400px;" alt="" src="img/gaussian_hypertuning.png">
-
+<div style="text-align: center;">
+  <img style="height: 400px;" alt="" src="img/kmeans_hypertuning.png">
+  <br>
+  <b>Gaussian mixture model:</b> <br>
+  To choose the number of components in our Gaussian Mixture Model, we used <a href="https://en.wikipedia.org/wiki/Akaike_information_criterion">Akaike information criterion (AIC)</a> and <a href="https://en.wikipedia.org/wiki/Bayesian_information_criterion">Bayesian information criterion (BIC)</a>. The optimal number of clusters is one that minimizes AIC and BIC. Observing the below graph, we can say that it is around 15.
+  <br>
+  <img style="height: 400px;" alt="" src="img/gaussian_hypertuning.png">
+</div>
 <br><br><br>
 <h2>Results</h2>
 Using the Mask R-CNN implementation, and updating it to detect cats and dogs only, we can produce the following succesful segmentation:
@@ -223,7 +224,7 @@ Here are the results of our proposed system given several input images using dif
 <br><br><br>
 
 <h2>Conclusion/Future Work</h2>
-In conclusion, we were successfully able to output similar looking cat/dogs given an input image with decent accuracy. When we tried multiple images, we saw that were able to achieve better results for dog images than cat images. There are various details we plan to work on and experiment with in the future. First, we want to try clustering dogs and cats separately to see if that generates better matches. We also would like to look into bolstering the feature representation by using texture features such as a Gabor filter.
+In conclusion, we were successful in outputting similar looking cat/dogs given an input image. When we tried multiple images, we saw that were able to achieve better results for dog images than cat images. There are various details we plan to work on and experiment with in the future. First, we want to try clustering dogs and cats separately to see if that generates better matches. We also would like to look into bolstering the feature representation by using texture features such as a Gabor filter.
 After examination of our dataset, we saw that there were quite a few images that had poor lighting and/or had multiple animals in them. This could significantly affect the results of the system. So, another improvement would be data cleaning. As mentioned above, we only used 8,800 images for our training set, and we would aim to cluster more to generate better results. 
 
 <br><br><br>
