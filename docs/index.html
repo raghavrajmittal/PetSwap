@@ -13,7 +13,7 @@
   <link href="css/bootstrap.css" rel="stylesheet">
 <style>
 body {
-padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+padding-top: 60px;
 }
 .vis {
 color: #3366CC;
@@ -84,7 +84,7 @@ We were inspired to do this project by this <a href="https://twistedsifter.com/2
 <div style="text-align: center;">
 <img style="height: 350px;" alt="" src="img/architecture.png">
 <br>
-Planned pipeline of PetSwap
+PetSwap Pipeline
 </div>
 
 <!-- Approach -->
@@ -108,10 +108,9 @@ We qualitatively evaluated three different clustering techniques--namely k-means
 <br><br><br>
 <!-- Results -->
 <h2>Experiments and Results</h2>
-
+<br>
 <h3>Experimental Setup</h3>
-
-<br><br>
+<br>
 <h4>Datasets</h4>
 We use two main datasets--one containing images of cats and the other containing images of dogs. The <a href="https://archive.org/details/CAT_DATASET">Cat Dataset</a> includes 10,000 cat images and the <a href="http://vision.stanford.edu/aditya86/ImageNetDogs/">Stanford Dogs Dataset</a> includes over 20,000 images of dogs, classified by breed.
 Before using these datasets to train our clusters, we first pre-processed the data. This involved extracting images from the dog and cat datasets, while also ignoring other metadata files. The dog dataset was manually shuffled so that the images were no longer separated by breed.
@@ -129,7 +128,7 @@ Clustering algorithms:
 In addition to these libraries, we use code from several GitHub repositories:
 <ul>
   <li><a href="https://github.com/matterport/Mask_RCNN">Mask R-CNN</a></li>
-  <li><a href="https://github.com/pochih/CBIR"></a>CBIR techniques</li>
+  <li><a href="https://github.com/pochih/CBIR">CBIR techniques</a></li>
 </ul>
 
 <br>
@@ -141,20 +140,25 @@ We implemented the pipeline to solve the problem end-to-end. Specifically, we cr
 Quantitatively, we define success for the project to be the elbow of the k vs SSE curve and having a distance of 10% (of the mean distance) between input and output images. We also qualitatively evaluate how close the dogs and cats look by have multiple people use our system and provide feedback.
 
 <h4>Hypertuning</h4>
-k-means:
-Gaussian mixture model:
-Mean shift: 
+<bold>k-means:</bold>
+<br>
+<bold>Gaussian mixture model:</bold>
+<br>
+<bold>Mean shift:</bold>
 
 <br><br>
 <h4>Experiments</h4>
 <h5>Mask R-CNN</h5>
-We hypothesized that Mask R-CNN would be accurate when segmenting dog and cat images from the other datasets. Since the Mask R-CNN model was pre-trained on COCO, it was effective in accurately segmenting out cat and dog images. Using the demo code from the original author of Mask R-CNN, we were able to successfully segment out objects in custom images. We processed the output futher to remove bounding boxes and segmentation masks that did not correspond to the dog and cat classes. We then extract pixels corresponing to the remaining masks, and use these pixel values to compute a feature representation of the object. <br>
+We hypothesized that Mask R-CNN would be accurate when segmenting dog and cat images from the other datasets. Since the Mask R-CNN model was pre-trained on COCO, it was effective in accurately segmenting out cat and dog images. Using the demo code from the original author of Mask R-CNN, we were able to successfully segment out objects in custom images.
+We processed the output futher to remove bounding boxes and segmentation masks that did not correspond to the dog and cat classes. We then extract pixels corresponing to the remaining masks, and use these pixel values to compute a feature representation of the object.
+One major drawback of Mask R-CNN is the compute power and processing time it requires to segment images. The GPU we used simply could not handle Tensorflow models with 10,000+ images without running out of memory. For this reason, we used a subset of the dog and cat data. We ended up clustering roughly 8,800 images, where half were dog images and half were cat images.
+<br>
 <h5>Foreground Feature Representation</h5>
 We have implemented various feature extractors based on color and texture, and have experimented with which combination of those feature extractors provide the best clustering result. <br>
 <h5>Distance Function</h5>
 When determining the similarity of two images, there are a number of distance metrics that could be used. With our feature representation, Euclidean distance is the best option. The results are shown in the next section. <br>
 <h5>Clustering Algorithm</h5>
-There are details of our clustering process that we need to determine through experiments. First, we need to decide whether we would cluster the dogs and cats separately or all together.<br>
+First, we need to decide whether we would cluster the dogs and cats separately or all together.<br>
 Next, we would experiment with the clustering methods. We can try both hard and soft clustering. Hard clustering assigns each point to a cluster definitively, soft clustering uses a probabilistic approach to assign probabilities of belonging to each cluster for each point. Both could provide interesting results in this project since we expect hard clustering to give cleaner results faster but soft clustering to perhaps find some insights missing from hard clustering.<br>
 Another detail would be what hard clustering algorithm we would utilize. We would decide between centroid-based and density-based, i.e. mean clustering vs. mode clustering. We would figure out these two details by comparing the accuracy of each implementation. <br>
 Additionally, we can try varying the value of k in hard clustering. This is key to finding meaningful groups in the dataset. If the clusters are too small, similar images may not be grouped together. On the other, clusters that are too large will group dissimilar images together. We would decide this using the elbow method, trying to find the optimal value of k.
@@ -194,21 +198,13 @@ Here are the results of our proposed system given several input images using dif
   </div>
 <br><br>
   <div>
-    <img style="height: 200px;" alt="" src="img/mask_rcnn_output.png">
+    <img style="height: 200px;" alt="" src="img/example4.png">
     <br>Example 4
   </div>
 </div>
 
 <br><br><br>
 
-We also created a demo application using Flask and HTML, since these tools integrate with our Python code seamlessly. The user can input an image and press a button to send a POST request to the method that calls our pipeline to retrieve the matching image. The application provides a manual method to conduct end-to-end testing of the pipeline using new input images.
-
-<div style="text-align: center;">
-  <img style="height: 200px;" alt="" src="img/interface.png">
-  <br>
-</div>
-
-  <br><br><br>
 <h2>Conclusion/Future Work</h2>
 We have quite a few things to achieve for our final project update. The first thing we have to do is replace the clustering input with feature representations of the images to ensure that our feature representations accurately represent the image content we are trying to retrieve. This can also help ensure that the specifications of our clustering algorithm are good. Based on this, we can update our feature representation and clustering accordingly, including running clustering experiments to find optimal parameter values as well as testing various clustering algorithms. We also need to implement an effective way of storing our data such that it can be accessed easily, and information about the closest cluster center and feature representation can be stored. Lastly, we need to connect our project interface to our pipeline so that we can perform end-to-end testing.
 
