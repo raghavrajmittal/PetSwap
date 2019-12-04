@@ -7,7 +7,7 @@ import pickle
 
 def cluster(features):
     # kmeans = KMeans(n_clusters=3)
-    kmeans = MiniBatchKMeans(n_clusters=300)
+    kmeans = MiniBatchKMeans(n_clusters=440)
     kmeans.fit(features)
     labels = kmeans.predict(features)
     centroids = kmeans.cluster_centers_
@@ -53,7 +53,7 @@ if __name__ == '__main__':
     features = np.delete(features, indices, axis=0)
     files = np.delete(files, indices)
     np.savez('cluster_data.npz', image_names=files, features=features)
-    hypertune(features)
+    cluster(features)
 
 '''
 # replace with actual data
