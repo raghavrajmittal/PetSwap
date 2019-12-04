@@ -159,11 +159,14 @@ We expected hard clustering to give cleaner results, but soft clustering to disc
 This was key to finding meaningful groups in the dataset. If the clusters were too small, similar images were not as easy to find. On the other hand, clusters that were too large grouped dissimilar images together. We decided this using the elbow method, which finds the optimal value for k.
 <br>
 <h5>Hypertuning</h5>
-<bold>k-means:</bold>
+<b>k-means:</b> <br>
+Observing the below graph, we can see that there was not a smooth curve when we plotted SSE vs k. So, we chose k to be 440, which appeared to have a low enough error that straightened out as the value of k increased. <br>
+<img style="height: 400px;" alt="" src="img/kmeans_hypertuning.png">
 <br>
-<bold>Gaussian mixture model:</bold>
+<b>Gaussian mixture model:</b> <br>
+To choose the number of components in our Gaussian Mixture Model, we used <a href="https://en.wikipedia.org/wiki/Akaike_information_criterion">Akaike information criterion (AIC)</a> and <a href="https://en.wikipedia.org/wiki/Bayesian_information_criterion">Bayesian information criterion (BIC)</a>. The optimal number of clusters is one that minimizes AIC and BIC. Observing the below graph, we can say that it is around 15.
 <br>
-<bold>Mean shift:</bold>
+<img style="height: 400px;" alt="" src="img/gaussian_hypertuning.png">
 
 <br><br><br>
 <h2>Results</h2>
